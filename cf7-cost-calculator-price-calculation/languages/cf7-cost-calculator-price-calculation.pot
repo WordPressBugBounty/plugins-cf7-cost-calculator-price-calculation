@@ -1,0 +1,262 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Project-Id-Version: Contact Form 7 Cost Calculator - Price Calculation\n"
+"POT-Creation-Date: 2024-05-03 12:01+0700\n"
+"PO-Revision-Date: 2024-05-03 12:00+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: index.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: add-ons.php:218 add-ons.php:280
+msgid "Improve your forms with our premium addons."
+msgstr ""
+
+#: add-ons.php:230 add-ons.php:336
+msgid "Live Demo"
+msgstr ""
+
+#: add-ons.php:238 add-ons.php:344
+msgid "Download"
+msgstr ""
+
+#: backend/checkbox.php:265
+msgid "checkboxes price"
+msgstr ""
+
+#: backend/checkbox.php:267
+msgid "radio buttons price"
+msgstr ""
+
+#: backend/checkbox.php:278
+#, php-format
+msgid ""
+"Generate a form-tag for a group of checkboxes. For more details, see %s."
+msgstr ""
+
+#: backend/checkbox.php:280
+#, php-format
+msgid ""
+"Generate a form-tag for a group of radio buttons. For more details, see %s."
+msgstr ""
+
+#: backend/checkbox.php:282 backend/select.php:163
+msgid "https://contactform7.com/checkboxes-radio-buttons-and-menus/"
+msgstr ""
+
+#: backend/checkbox.php:282 backend/select.php:163
+msgid "Checkboxes, Radio Buttons and Menus"
+msgstr ""
+
+#: backend/checkbox.php:291 backend/checkbox.php:294 backend/index.php:110
+#: backend/index.php:113 backend/number_format.php:57
+#: backend/number_format.php:60 backend/select.php:171 backend/select.php:174
+msgid "Field type"
+msgstr ""
+
+#: backend/checkbox.php:295 backend/index.php:114 backend/number_format.php:61
+#: backend/select.php:175
+msgid "Required field"
+msgstr ""
+
+#: backend/checkbox.php:301 backend/index.php:135 backend/number_format.php:78
+#: backend/select.php:180
+msgid "Name"
+msgstr ""
+
+#: backend/checkbox.php:305 backend/checkbox.php:308 backend/select.php:184
+#: backend/select.php:187
+msgid "Options"
+msgstr ""
+
+#: backend/checkbox.php:311 backend/select.php:189
+msgid "One option per line (number|text): Ex: <strong>10|Blue $10</strong>"
+msgstr ""
+
+#: backend/checkbox.php:312
+msgid "Put a label first, a checkbox last"
+msgstr ""
+
+#: backend/checkbox.php:313
+msgid "Wrap each item with label element"
+msgstr ""
+
+#: backend/checkbox.php:315
+msgid "Make checkboxes exclusive"
+msgstr ""
+
+#: backend/checkbox.php:321 backend/index.php:207 backend/number_format.php:82
+#: backend/select.php:195
+msgid "Id attribute"
+msgstr ""
+
+#: backend/checkbox.php:325 backend/index.php:211 backend/number_format.php:86
+#: backend/select.php:199
+msgid "Class attribute"
+msgstr ""
+
+#: backend/checkbox.php:338 backend/index.php:221 backend/number_format.php:157
+#: backend/select.php:209
+msgid "Insert Tag"
+msgstr ""
+
+#: backend/checkbox.php:341 backend/select.php:212
+#, php-format
+msgid ""
+"To use the value input through this field in a mail field, you need to "
+"insert the corresponding mail-tag (%s) into the field on the Mail tab."
+msgstr ""
+
+#: backend/index.php:37
+msgid "Calculator"
+msgstr ""
+
+#: backend/index.php:102 backend/number_format.php:49
+msgid "Pro version"
+msgstr ""
+
+#: backend/index.php:119 backend/number_format.php:66
+msgid "Type input"
+msgstr ""
+
+#: backend/index.php:120 backend/number_format.php:67
+msgid "Hide input and show lable"
+msgstr ""
+
+#: backend/index.php:123
+msgid "Lable display Property"
+msgstr ""
+
+#: backend/index.php:124
+msgid ""
+"Displays an element as a block element (like <p>). It starts on a new line, "
+"and takes up the whole width"
+msgstr ""
+
+#: backend/index.php:127 backend/index.php:128 backend/number_format.php:70
+#: backend/number_format.php:71
+msgid "Hide Field"
+msgstr ""
+
+#: backend/index.php:131 backend/index.php:132 backend/number_format.php:74
+#: backend/number_format.php:75
+msgid "Float Right"
+msgstr ""
+
+#: backend/index.php:140
+msgid "Set Formula"
+msgstr ""
+
+#: backend/index.php:146
+msgid ""
+"Eg: (number-253 + number-254)/ 2 + radio_custom-708 + checkbox_custom-708"
+msgstr ""
+
+#: backend/index.php:152 backend/number_format.php:28
+#: backend/number_format.php:97
+msgid "Number Format"
+msgstr ""
+
+#: backend/index.php:154 backend/number_format.php:99
+msgid "Enable Number Format"
+msgstr ""
+
+#: backend/index.php:159 backend/number_format.php:104
+msgid "Symbols"
+msgstr ""
+
+#: backend/index.php:164 backend/number_format.php:109
+msgid "Special characters:"
+msgstr ""
+
+#: backend/index.php:177 backend/number_format.php:121
+msgid "Symbols position Right"
+msgstr ""
+
+#: backend/index.php:187 backend/number_format.php:131
+msgid "Thousand separator"
+msgstr ""
+
+#: backend/index.php:194 backend/number_format.php:138
+msgid "Decimal separator"
+msgstr ""
+
+#: backend/index.php:201 backend/number_format.php:145
+msgid "Number of decimals"
+msgstr ""
+
+#: backend/number_format.php:90
+msgid "Set default"
+msgstr ""
+
+#: backend/select.php:91
+msgid "&#8212;Please choose an option&#8212;"
+msgstr ""
+
+#: backend/select.php:157
+msgid "drop-down menu price"
+msgstr ""
+
+#: backend/select.php:162
+#, php-format
+msgid "Generate a form-tag for a drop-down menu. For more details, see %s."
+msgstr ""
+
+#: backend/select.php:190
+msgid "Insert a blank item as the first option"
+msgstr ""
+
+#: superaddons/check_purchase_code.php:34
+msgid "Enter Purchase Code below the plugin  or Upgrade to pro version: "
+msgstr ""
+
+#: superaddons/check_purchase_code.php:53
+msgid "Purchase Code:"
+msgstr ""
+
+#: superaddons/check_purchase_code.php:53
+msgid "Active"
+msgstr ""
+
+#: superaddons/check_purchase_code.php:54
+msgid "Remove"
+msgstr ""
+
+#: superaddons/check_purchase_code.php:54
+msgid "Get pro version"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Contact Form 7 Cost Calculator - Price Calculation"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://add-ons.org/plugin/contact-form-7-cost-calculator/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Create forms with field values calculated based in other form field values "
+"for contact form 7"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "add-ons.org"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://add-ons.org/"
+msgstr ""
