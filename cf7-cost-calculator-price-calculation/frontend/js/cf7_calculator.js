@@ -14,32 +14,39 @@
             }
         })
         $.cf7_formulas = function(){
-           var total = 0;
-           var max = 100;
-           var reg =[]; 
-           var match;
-           $("form.wpcf7-form input").each(function () { 
+            var total = 0;
+            var max = 100;
+            var reg =[]; 
+            var match;
+            $("form.wpcf7-form input").each(function () { 
                 if( $(this).attr("type") == "checkbox" || $(this).attr("type") == "radio"  ) {
-                    var name = $(this).attr("name").replace("[]", "");
-                    reg.push(name);
+                    var name = $(this).attr("name");
+					if(name !== undefined){
+						name = $(this).attr("name").replace("[]", "");
+                        reg.push(name);
+					}
                 }else{
-                    reg.push($(this).attr("name"));
+					var name = $(this).attr("name");
+					if(name !== undefined){
+						name = $(this).attr("name").replace("[]", "");
+                        reg.push(name);
+					}
                 }
-           })
-           $("form.wpcf7-form select").each(function () { 
+            })
+            $("form.wpcf7-form select").each(function () { 
                 reg.push($(this).attr("name"));
-           })
-           reg = $.remove_duplicates_ctf7(reg);
-         var field_regexp = new RegExp( '('+reg.join("|")+')');
-           $( ".ctf7-total" ).each(function( index ) {
+            })
+            reg = $.remove_duplicates_ctf7(reg);
+            var field_regexp = new RegExp( '('+reg.join("|")+')');
+            $( ".ctf7-total" ).each(function( index ) {
                 var eq = $(this).data('formulas');
                 var value_key_vl = false;
                 if(eq == "") {
                     return ;
                 }
-               eq = eq.toString();
-               eq = eq.replace(/ /g,'');
-               while ( match = field_regexp.exec( eq ) ){
+                eq = eq.toString();
+                eq = eq.replace(/ /g,'');
+                while ( match = field_regexp.exec( eq ) ){
                     var type = $("input[name="+match[0]+"]").attr("type");
                     if( type === undefined ) {
                         var type = $("input[name='"+match[0]+"[]']").attr("type");
@@ -155,8 +162,7 @@
                         var r = mexp.eval( eq ); // Evaluate the final equation
                         total = r;
                     }
-                    catch(e)
-                    {
+                    catch(e){
                         total = eq;
                     }
                 }else{
@@ -164,8 +170,7 @@
                         var r = eval( eq );
                         total = r;
                     }
-                    catch(e)
-                    {
+                    catch(e){
                         total = eq+" Pro version";
                     }
                 }
@@ -180,7 +185,7 @@
                     $(this).val(total);
                     $(this).parent().find('.cf7-calculated-name').html(total);
                 }
-           });
+            });
         }
     $.remove_duplicates_ctf7 = function(arr) {
         var obj = {};
