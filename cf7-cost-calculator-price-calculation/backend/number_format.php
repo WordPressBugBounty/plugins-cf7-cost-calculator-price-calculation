@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class cf7_number_format_backend{
 	function __construct(  ){
 		add_action( 'wpcf7_admin_init' , array($this,'add_tag_generator_total') , 100 );
@@ -25,8 +26,127 @@ class cf7_number_format_backend{
 	function add_tag_generator_total(){
 		if ( ! class_exists( 'WPCF7_TagGenerator' ) ) return;
 		$tag_generator = WPCF7_TagGenerator::get_instance();
-		$tag_generator->add( 'number_format', __( 'Number Format', 'cf7-cost-calculator-price-calculation' ),
+		if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+			$tag_generator->add( 'number_format', __( 'Number Format', 'cf7-cost-calculator-price-calculation' ),
+			array($this,'tag_generator_total_2'),array("version"=>2));
+		}else{
+			$tag_generator->add( 'number_format', __( 'Number Format', 'cf7-cost-calculator-price-calculation' ),
 			array($this,'tag_generator_total') );
+		}
+	}
+	function tag_generator_total_2($contact_form , $options = ''){
+		$args = wp_parse_args( $options, array() );
+		$check = get_option( '_redmuber_item_1515');
+		$type = $args['id'];
+		$datas = array();
+		$datas_done = array();
+		$text_pro = "";
+		$disable_pro = "";
+		$class_pro = "";
+		if($check != "ok"){
+			$text_pro = "-Pro version";
+			$disable_pro = " disabled";
+			$class_pro = "pro_disable";
+		}
+        $field_types = array(
+			'number_format' => array(
+				'display_name' => __( 'Number Format', 'contact-form-7' ),
+				'heading' => __( 'Calculator form-tag generator', 'contact-form-7' ),
+				'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">Calculator</a>.', 'contact-form-7' ),
+			),
+		);
+		$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
+		?>
+		<header class="description-box">
+			<h3><?php
+				echo esc_html( $field_types['number_format']['heading'] );
+			?></h3>
+			<p><?php
+				$description = wp_kses(
+					$field_types['number_format']['description'],
+					array(
+						'a' => array( 'href' => true ),
+						'strong' => array(),
+					),
+					array( 'http', 'https' )
+				);
+				echo $description;
+			?></p>
+		</header>
+		<div class="control-box">
+			<?php
+			$tgg->print( 'field_type', array(
+				'with_required' => true,
+				'select_options' => array(
+					'number_format' => $field_types['number_format']['display_name'],
+				),
+			) );
+			$tgg->print( 'field_name' );
+			$tgg->print( 'class_attr' );
+			$tgg->print( 'default_value', array(
+				'type' => 'number',
+				'with_placeholder' => false,
+			) );
+			?>
+			<fieldset>
+				<legend id="float_right"><?php
+					echo esc_html( __( 'Float Right', 'contact-form-7' ) );
+				?></legend>
+				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="float_right:" aria-labelledby="float_right" />
+				<?php esc_html_e("Float Right",'cf7-cost-calculator-price-calculation') ?>
+			</fieldset>
+			<fieldset>
+				<legend id="cf7_label"><?php
+					echo esc_html( __( 'Number Format', 'contact-form-7' ) );
+				?></legend>
+				<input checked type="checkbox" value="on" data-tag-part="option" data-tag-option="format:" aria-labelledby="format" class="calculatedformat_enable" />
+				<?php esc_html_e("Enable Number Format",'cf7-cost-calculator-price-calculation') ?>
+			</fieldset>
+			<fieldset class="calculatedformat">
+				<legend id="symbols"><?php
+					echo esc_html( __( 'Symbols', 'contact-form-7' ) );
+				?></legend>
+				<input type="text" data-tag-part="option" data-tag-option="symbols:" aria-labelledby="format" class="calculatedformat_data" />
+				<?php  echo esc_html($text_pro);  ?>
+			</fieldset>
+			<fieldset class="calculatedformat">
+				<legend id="symbols_position_right"><?php
+					echo esc_html( __( 'Symbols position Right', 'contact-form-7' ) );
+				?></legend>
+				<input type="checkbox" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="symbols_position_right:" aria-labelledby="symbols_position_right" class="calculatedformat_data" />
+				<?php  echo esc_html($text_pro);  ?>
+			</fieldset>
+			<fieldset class="calculatedformat">
+				<legend id="thousand_sep"><?php
+					echo esc_html( __( 'Thousand separator', 'contact-form-7' ) );
+				?></legend>
+				<input type="text" data-tag-part="option" data-tag-option="thousand_sep:" aria-labelledby="thousand_sep" class="calculatedformat_data" placeholder="comma" <?php echo esc_attr($disable_pro) ?>  />
+				<?php  echo esc_html($text_pro);  ?>
+			</fieldset>
+			<fieldset class="calculatedformat">
+				<legend id="decimal_sep"><?php
+					echo esc_html( __( 'Decimal separator', 'contact-form-7' ) );
+				?></legend>
+				<input type="text" data-tag-part="option" data-tag-option="decimal_sep:" aria-labelledby="decimal_sep" class="calculatedformat_data" placeholder="." />
+				<?php  echo esc_html($text_pro);  ?>
+			</fieldset>
+			<fieldset class="calculatedformat">
+				<legend id="num_decimals"><?php
+					echo esc_html( __( 'Number of decimals', 'contact-form-7' ) );
+				?></legend>
+				<input type="number" <?php echo esc_attr($disable_pro) ?> data-tag-part="num_decimals" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
+				<?php  echo esc_html($text_pro);  ?>
+			</fieldset>
+			<?php
+			?>
+		</div>
+		<footer class="insert-box">
+			<?php
+				$tgg->print( 'insert_box_content' );
+				$tgg->print( 'mail_tag_tip' );
+			?>
+		</footer>
+		<?php
 	}
 	function tag_generator_total($contact_form , $args = ''){
 		$args = wp_parse_args( $args, array() );

@@ -59,8 +59,8 @@ if(!class_exists('Superaddons_Check_Purchase_Code')){
 	        if($check != "ok" ) {
 		        if ( in_array( $pagenow, $admin_pages )) {
 		        ?>
-		        <div class="notice notice-warning is-dismissible">
-		            <p><strong><?php echo esc_attr($this->data["plugin_name"]) ?>: </strong><?php esc_html_e( 'Upgrade to pro version: ', 'rednumber' ); ?> <a href="<?php echo esc_url( $this->data["pro"] ) ?>" target="_blank" ><?php echo esc_url( $this->data["pro"] ) ?></a></p>
+		         <div class="notice notice-warning is-dismissible">
+		            <p><strong><?php echo esc_attr($this->data["plugin_name"]) ?>: </strong><?php esc_html_e( 'Enter Purchase Code below the plugin  or Upgrade to pro version: ', 'rednumber' ); ?> <a href="<?php echo esc_url( $this->data["pro"] ) ?>" target="_blank" ><?php echo esc_url( $this->data["pro"] ) ?></a></p>
 		        </div>
 		        <?php
 		    	}

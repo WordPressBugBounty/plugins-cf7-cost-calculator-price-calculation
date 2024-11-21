@@ -154,8 +154,111 @@ function wpcf7_select_validation_filter_custom( $result, $tag ) {
 add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_menu_custom', 98 );
 function wpcf7_add_tag_generator_menu_custom() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'select_custom', __( 'drop-down menu price', 'cf7-cost-calculator-price-calculation' ),
+	if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+		$tag_generator->add( 'select_custom', __( 'drop-down menu price', 'cf7-cost-calculator-price-calculation' ),
+		'wpcf7_tag_generator_menu_custom_2',array("version"=>2) );
+	}else{
+		$tag_generator->add( 'select_custom', __( 'drop-down menu price', 'cf7-cost-calculator-price-calculation' ),
 		'wpcf7_tag_generator_menu_custom' );
+	}
+	
+}
+function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
+	$field_types = array(
+		'select_custom' => array(
+			'display_name' => __( 'Drop-down menu', 'contact-form-7' ),
+			'heading' => __( 'Drop-down menu form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">drop-down menu</a>.', 'contact-form-7' ),
+		),
+	);
+
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
+
+	?>
+	<header class="description-box">
+		<h3><?php
+			echo esc_html( $field_types['select_custom']['heading'] );
+		?></h3>
+
+		<p><?php
+			$description = wp_kses(
+				$field_types['select_custom']['description'],
+				array(
+					'a' => array( 'href' => true ),
+					'strong' => array(),
+				),
+				array( 'http', 'https' )
+			);
+
+			echo $description;
+		?></p>
+	</header>
+
+	<div class="control-box">
+		<?php
+			$tgg->print( 'field_type', array(
+				'with_required' => true,
+				'select_options' => array(
+					'select_custom' => $field_types['select_custom']['display_name'],
+				),
+			) );
+
+			$tgg->print( 'field_name' );
+
+			$tgg->print( 'class_attr' );
+		?>
+		<fieldset>
+			<legend id="selectable-values-legend"><?php
+				echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
+			?></legend>
+			<?php
+				echo sprintf(
+					'<span %1$s>%2$s</span>',
+					wpcf7_format_atts( array(
+						'id' => 'selectable-values-description',
+					) ),
+					esc_html( __( "One item per line.", 'contact-form-7' ) )
+				);
+			?>
+			<br />
+			<?php
+				echo sprintf(
+					'<textarea %1$s>%2$s</textarea>',
+					wpcf7_format_atts( array(
+						'required' => true,
+						'data-tag-part' => 'value',
+						'aria-labelledby' => 'selectable-values-legend',
+						'aria-describedby' => 'selectable-values-description',
+					) ),
+					esc_html( __( "10|Option 1\n20|Option 2\n30|Option 3", 'contact-form-7' ) )
+				);
+			?>
+			<?php if ( true ) { ?>
+			<br />
+			<?php
+				echo sprintf(
+					'<label><input %1$s /> %2$s</label>',
+					wpcf7_format_atts( array(
+						'type' => 'checkbox',
+						'checked' => 'checked',
+						'data-tag-part' => 'option',
+						'data-tag-option' => 'use_label_element',
+					) ),
+					esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
+				);
+			?>
+			<?php } ?>
+		</fieldset>
+	</div>
+
+	<footer class="insert-box">
+		<?php
+			$tgg->print( 'insert_box_content' );
+
+			$tgg->print( 'mail_tag_tip' );
+		?>
+	</footer>
+	<?php
 }
 function wpcf7_tag_generator_menu_custom( $contact_form, $args = '' ) {
 	$args = wp_parse_args( $args, array() );

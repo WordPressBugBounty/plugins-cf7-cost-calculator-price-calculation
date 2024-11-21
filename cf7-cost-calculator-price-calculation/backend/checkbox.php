@@ -229,10 +229,112 @@ add_action( 'wpcf7_admin_init',
 	'wpcf7_add_tag_generator_checkbox_and_radio_custom', 90 );
 function wpcf7_add_tag_generator_checkbox_and_radio_custom() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'checkbox_custom', __( 'checkboxes price', 'contact-form-7-cost-calculator' ),
+	if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+		//remove it
+		$tag_generator->add( 'checkbox_custom', __( 'Checkbox price', 'cf7-cost-calculator-price-calculation' ),
+		'wpcf7_tag_generator_checkbox_custom_2',array("version"=>2));
+		$tag_generator->add( 'radio_custom', __( 'Radio price', 'cf7-cost-calculator-price-calculation' ),
+		'wpcf7_tag_generator_checkbox_custom_2',array("version"=>2));
+	}else{
+		$tag_generator->add( 'checkbox_custom', __( 'Checkbox price', 'contact-form-7-cost-calculator' ),
 		'wpcf7_tag_generator_checkbox_custom' );
-	$tag_generator->add( 'radio_custom', __( 'radio buttons price', 'contact-form-7-cost-calculator' ),
+		$tag_generator->add( 'radio_custom', __( 'Radio price', 'contact-form-7-cost-calculator' ),
 		'wpcf7_tag_generator_checkbox_custom' );
+	}
+}
+function wpcf7_tag_generator_checkbox_custom_2( $contact_form, $options = '' ) {
+	$field_types = array(
+		'checkbox_custom' => array(
+			'display_name' => __( 'Checkboxes', 'contact-form-7' ),
+			'heading' => __( 'Checkboxes form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a group of <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">checkboxes</a>.', 'contact-form-7' ),
+		),
+		'radio_custom' => array(
+			'display_name' => __( 'Radio buttons', 'contact-form-7' ),
+			'heading' => __( 'Radio buttons form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a group of <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">radio buttons</a>.', 'contact-form-7' ),
+		),
+	);
+	$basetype = $options['id'];
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
+	?>
+	<header class="description-box">
+		<h3><?php
+			echo esc_html( $field_types[$basetype]['heading'] );
+		?></h3>
+		<p><?php
+			$description = wp_kses(
+				$field_types[$basetype]['description'],
+				array(
+					'a' => array( 'href' => true ),
+					'strong' => array(),
+				),
+				array( 'http', 'https' )
+			);
+			echo $description;
+		?></p>
+	</header>
+	<div class="control-box">
+		<?php
+			$tgg->print( 'field_type', array(
+				'with_required' => 'checkbox_custom' === $basetype,
+				'select_options' => array(
+					$basetype => $field_types[$basetype]['display_name'],
+				),
+			) );
+			$tgg->print( 'field_name' );
+			$tgg->print( 'class_attr' );
+		?>
+		<fieldset>
+			<legend id="selectable-values-legend"><?php
+				echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
+			?></legend>
+			<?php
+				echo sprintf(
+					'<span %1$s>%2$s</span>',
+					wpcf7_format_atts( array(
+						'id' => 'selectable-values-description',
+					) ),
+					esc_html( __( "One item per line.", 'contact-form-7' ) )
+				);
+			?>
+			<br />
+			<?php
+				echo sprintf(
+					'<textarea %1$s>%2$s</textarea>',
+					wpcf7_format_atts( array(
+						'required' => true,
+						'data-tag-part' => 'value',
+						'aria-labelledby' => 'selectable-values-legend',
+						'aria-describedby' => 'selectable-values-description',
+					) ),
+					esc_html( __( "10|Option 1\n20|Option 2\n30|Option 3", 'contact-form-7' ) )
+				);
+			?>
+			<?php if ( true ) { ?>
+			<br />
+			<?php
+				echo sprintf(
+					'<label><input %1$s /> %2$s</label>',
+					wpcf7_format_atts( array(
+						'type' => 'checkbox',
+						'checked' => 'checked',
+						'data-tag-part' => 'option',
+						'data-tag-option' => 'use_label_element',
+					) ),
+					esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
+				);
+			?>
+			<?php } ?>
+		</fieldset>
+	</div>
+	<footer class="insert-box">
+		<?php
+			$tgg->print( 'insert_box_content' );
+			$tgg->print( 'mail_tag_tip' );
+		?>
+	</footer>
+	<?php
 }
 function wpcf7_tag_generator_checkbox_custom( $contact_form, $args = '' ) {
 	$args = wp_parse_args( $args, array() );
