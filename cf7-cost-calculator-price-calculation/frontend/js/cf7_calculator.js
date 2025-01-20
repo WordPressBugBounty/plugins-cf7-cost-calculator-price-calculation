@@ -21,16 +21,16 @@
             $("form.wpcf7-form input").each(function () { 
                 if( $(this).attr("type") == "checkbox" || $(this).attr("type") == "radio"  ) {
                     var name = $(this).attr("name");
-					if(name !== undefined){
-						name = $(this).attr("name").replace("[]", "");
+                    if(name !== undefined){
+                        name = $(this).attr("name").replace("[]", "");
                         reg.push(name);
-					}
+                    }
                 }else{
-					var name = $(this).attr("name");
-					if(name !== undefined){
-						name = $(this).attr("name").replace("[]", "");
+                    var name = $(this).attr("name");
+                    if(name !== undefined){
+                        name = $(this).attr("name").replace("[]", "");
                         reg.push(name);
-					}
+                    }
                 }
             })
             $("form.wpcf7-form select").each(function () { 
@@ -156,6 +156,7 @@
                     eq = $.cf7_fomulas_log(eq);
                     eq = $.cf7_fomulas_rand(eq);
                     eq = $.cf7_fomulas_rounded_multiple(eq);
+                    eq = $.cf7_wordcount(eq);
                     eq = $.cf7_fomulas_round_custom(eq);
                     eq = $.cf7_fomulas_elseif(eq);
                     try{
@@ -571,6 +572,19 @@
                 });
             if( x.match(re) ){
                 x = $.cf7_fomulas_log(x);
+            }
+            return x;
+        }
+        $.cf7_wordcount = function(x){ 
+            var re = /wordcount\(([^()]*)\)/gm;
+            x = x.replace( re,function (x) {
+                    x = x.replace(/wordcount\(/, '').replace(/\)$/, '');
+                    console.log(x);
+                    console.log(x.trim().split(/\s+/));
+                     return x.trim().split(/\s+/).length;
+                });
+            if( x.match(re) ){
+                x = $.cf7_wordcount(x);
             }
             return x;
         }

@@ -36,7 +36,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 	function add_tag_generator_total(){
 		if ( ! class_exists( 'WPCF7_TagGenerator' ) ) return;
 		$tag_generator = WPCF7_TagGenerator::get_instance();
-		if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+		if( version_compare(WPCF7_VERSION,"6.0") >= 0 ){
 			$tag_generator->add( 'calculated', __( 'Calculator', 'cf7-cost-calculator-price-calculation' ),
 			array($this,'tag_generator_total_2'),array("version"=>2));
 		}else{

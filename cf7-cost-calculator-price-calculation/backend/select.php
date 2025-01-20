@@ -154,7 +154,7 @@ function wpcf7_select_validation_filter_custom( $result, $tag ) {
 add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_menu_custom', 98 );
 function wpcf7_add_tag_generator_menu_custom() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+	if( version_compare(WPCF7_VERSION,"6.0") >= 0 ){
 		$tag_generator->add( 'select_custom', __( 'drop-down menu price', 'cf7-cost-calculator-price-calculation' ),
 		'wpcf7_tag_generator_menu_custom_2',array("version"=>2) );
 	}else{

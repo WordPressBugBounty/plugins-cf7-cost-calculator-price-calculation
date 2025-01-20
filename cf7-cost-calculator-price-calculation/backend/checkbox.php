@@ -229,7 +229,7 @@ add_action( 'wpcf7_admin_init',
 	'wpcf7_add_tag_generator_checkbox_and_radio_custom', 90 );
 function wpcf7_add_tag_generator_checkbox_and_radio_custom() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	if( version_compare(WPCF7_VERSION,"6.0" >= 0) ){
+	if( version_compare(WPCF7_VERSION,"6.0") >= 0 ){
 		//remove it
 		$tag_generator->add( 'checkbox_custom', __( 'Checkbox price', 'cf7-cost-calculator-price-calculation' ),
 		'wpcf7_tag_generator_checkbox_custom_2',array("version"=>2));

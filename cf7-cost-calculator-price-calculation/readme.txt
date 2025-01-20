@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.7
-Stable tag: 7.6.0
+Stable tag: 7.6.1
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -75,6 +75,7 @@ Calculated Fields Form can be used for creating both single and complex calculat
 - **POW function**: pow(number1, number2)
 - **SIN, COS function**: sin(0) cos(0)
 - **SUM function**: sum(number1, number2, number3,...)
+- **WORDCOUNT function**: wordcount(field)
 - **Round up to the next multiple of number**: rounded_multiple(7,5)
 - **Custom function**: If you need a formula that's not here, we'll add it
 
