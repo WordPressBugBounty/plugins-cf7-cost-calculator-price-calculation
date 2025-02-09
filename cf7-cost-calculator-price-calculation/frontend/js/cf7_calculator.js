@@ -36,6 +36,9 @@
             $("form.wpcf7-form select").each(function () { 
                 reg.push($(this).attr("name"));
             })
+            $("form.wpcf7-form textarea").each(function () { 
+                reg.push($(this).attr("name"));
+            })
             reg = $.remove_duplicates_ctf7(reg);
             var field_regexp = new RegExp( '('+reg.join("|")+')');
             $( ".ctf7-total" ).each(function( index ) {
@@ -104,17 +107,22 @@
                         }
                     }
                     else if( type === undefined ){
-                        var vl = $("select[name="+match[0]+"]").val();
-                        var n = vl.search(/\|/i);
-                        if(n>0){
-                            var vls = vl.split("|");
-                            vl = vls[0];
+                        var type_textarea= $("textarea[name="+match[0]+"]").val();
+                        if( type_textarea === undefined){
+                            var vl = $("select[name="+match[0]+"]").val();
+                            var n = vl.search(/\|/i);
+                            if(n>0){
+                                var vls = vl.split("|");
+                                vl = vls[0];
+                            }else{
+                                var text_lb = $("select[name="+match[0]+"]").find(":selected").text();
+                                if( value_key_vl ){
+                                    $("select[name="+match[0]+"]").find(":selected").val(vl+ "|" + text_lb);
+                                }
+                            } 
                         }else{
-                            var text_lb = $("select[name="+match[0]+"]").find(":selected").text();
-                            if( value_key_vl ){
-                                $("select[name="+match[0]+"]").find(":selected").val(vl+ "|" + text_lb);
-                            }
-                        }   
+                            vl = type_textarea;
+                        }
                     }else{
                         if( $("input[name="+match[0]+"]").hasClass( "ctf7-total" ) ) {
                             var vl = $("input[name="+match[0]+"]").attr("data-number");
@@ -579,8 +587,6 @@
             var re = /wordcount\(([^()]*)\)/gm;
             x = x.replace( re,function (x) {
                     x = x.replace(/wordcount\(/, '').replace(/\)$/, '');
-                    console.log(x);
-                    console.log(x.trim().split(/\s+/));
                      return x.trim().split(/\s+/).length;
                 });
             if( x.match(re) ){

@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.7
-Stable tag: 7.6.1
+Stable tag: 7.6.2
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -104,6 +104,9 @@ Calculated Fields Form can be used for creating both single and complex calculat
 4. Addmin field
 
 == Changelog ==
+= 7.6.2 =
+Fixed: Settings in field
+
 = 7.6.0 =
 Compatible with Contact Form 7.0
 

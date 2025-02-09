@@ -134,7 +134,7 @@ class cf7_number_format_backend{
 				<legend id="num_decimals"><?php
 					echo esc_html( __( 'Number of decimals', 'contact-form-7' ) );
 				?></legend>
-				<input type="number" <?php echo esc_attr($disable_pro) ?> data-tag-part="num_decimals" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
+				<input type="number" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
 				<?php  echo esc_html($text_pro);  ?>
 			</fieldset>
 			<?php
