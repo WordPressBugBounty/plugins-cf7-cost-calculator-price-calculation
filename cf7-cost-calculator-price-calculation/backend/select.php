@@ -17,29 +17,21 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 	if ( empty( $tag->name ) ) {
 		return '';
 	}
-
 	$validation_error = wpcf7_get_validation_error( $tag->name );
-
 	$class = wpcf7_form_controls_class( $tag->type );
-
 	if ( $validation_error ) {
 		$class .= ' wpcf7-not-valid';
 	}
-
 	$atts = array();
-
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
-
 	$atts['autocomplete'] = $tag->get_option(
 		'autocomplete', '[-0-9a-zA-Z]+', true
 	);
-
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
 	}
-
 	if ( $validation_error ) {
 		$atts['aria-invalid'] = 'true';
 		$atts['aria-describedby'] = wpcf7_get_validation_error_reference(
@@ -48,14 +40,11 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 	} else {
 		$atts['aria-invalid'] = 'false';
 	}
-
 	$multiple = $tag->has_option( 'multiple' );
 	$include_blank = $tag->has_option( 'include_blank' );
 	$first_as_label = $tag->has_option( 'first_as_label' );
-
 	if ( $tag->has_option( 'size' ) ) {
 		$size = $tag->get_option( 'size', 'int', true );
-
 		if ( $size ) {
 			$atts['size'] = $size;
 		} elseif ( $multiple ) {
@@ -64,12 +53,10 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 			$atts['size'] = 1;
 		}
 	}
-
 	if ( $data = (array) $tag->get_data_option() ) {
 		$tag->values = array_merge( $tag->values, array_values( $data ) );
 		$tag->labels = array_merge( $tag->labels, array_values( $data ) );
 	}
-
 	//custom 
 	$custom_data = $tag->raw_values; 
 	$values = array();
@@ -80,10 +67,10 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 		$labels[] = $custom_data_ok[1];
 	}
 	// end custom 
-	$default_choice = $tag->get_default_option( null, array(
+	$default = $tag->get_option( 'default', '', true );
+	$default_choice = $tag->get_default_option( $default, array(
 		'multiple' => $multiple,
 	) );
-
 	if ( $include_blank
 	or empty( $values ) ) {
 		array_unshift(
@@ -94,34 +81,34 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 	} elseif ( $first_as_label ) {
 		$values[0] = '';
 	}
-
 	$html = '';
 	$hangover = wpcf7_get_hangover( $tag->name );
-
+	$i = 1;
 	foreach ( $values as $key => $value ) {
 		if ( $hangover ) {
 			$selected = in_array( $value, (array) $hangover, true );
 		} else {
 			$selected = in_array( $value, (array) $default_choice, true );
+			// if($i == $default){
+			// 	$selected =true;
+			// }else{
+			// 	$selected = false;
+			// }
 		}
-
 		$item_atts = array(
 			'value' => $value,
 			'selected' => $selected,
 		);
-
 		$label = isset( $labels[$key] ) ? $labels[$key] : $value;
-
 		$html .= sprintf(
 			'<option %1$s>%2$s</option>',
 			wpcf7_format_atts( $item_atts ),
 			esc_html( $label )
 		);
+		$i++;
 	}
-
 	$atts['multiple'] = (bool) $multiple;
 	$atts['name'] = $tag->name . ( $multiple ? '[]' : '' );
-
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><select %2$s>%3$s</select>%4$s</span>',
 		esc_attr( $tag->name ),
@@ -129,7 +116,6 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 		$html,
 		$validation_error
 	);
-
 	return $html;
 }
 /* Validation filter */
@@ -161,7 +147,6 @@ function wpcf7_add_tag_generator_menu_custom() {
 		$tag_generator->add( 'select_custom', __( 'drop-down menu price', 'cf7-cost-calculator-price-calculation' ),
 		'wpcf7_tag_generator_menu_custom' );
 	}
-	
 }
 function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 	$field_types = array(
@@ -171,15 +156,12 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">drop-down menu</a>.', 'contact-form-7' ),
 		),
 	);
-
 	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
-
 	?>
 	<header class="description-box">
 		<h3><?php
 			echo esc_html( $field_types['select_custom']['heading'] );
 		?></h3>
-
 		<p><?php
 			$description = wp_kses(
 				$field_types['select_custom']['description'],
@@ -189,11 +171,9 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 				),
 				array( 'http', 'https' )
 			);
-
 			echo $description;
 		?></p>
 	</header>
-
 	<div class="control-box">
 		<?php
 			$tgg->print( 'field_type', array(
@@ -202,9 +182,7 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 					'select_custom' => $field_types['select_custom']['display_name'],
 				),
 			) );
-
 			$tgg->print( 'field_name' );
-
 			$tgg->print( 'class_attr' );
 		?>
 		<fieldset>
@@ -250,11 +228,9 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 			<?php } ?>
 		</fieldset>
 	</div>
-
 	<footer class="insert-box">
 		<?php
 			$tgg->print( 'insert_box_content' );
-
 			$tgg->print( 'mail_tag_tip' );
 		?>
 	</footer>
