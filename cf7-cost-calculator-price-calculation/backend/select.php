@@ -65,6 +65,11 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 		$custom_data_ok = explode("|",$value_chua);
 		$values[] = $custom_data_ok[0];
 		$labels[] = $custom_data_ok[1];
+		if(isset($custom_data_ok[1])) {
+			$labels[] = $custom_data_ok[1];
+		}else{
+			$labels[] = $custom_data_ok[0];
+		}
 	}
 	// end custom 
 	$default = $tag->get_option( 'default', '', true );
@@ -89,11 +94,6 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 			$selected = in_array( $value, (array) $hangover, true );
 		} else {
 			$selected = in_array( $value, (array) $default_choice, true );
-			// if($i == $default){
-			// 	$selected =true;
-			// }else{
-			// 	$selected = false;
-			// }
 		}
 		$item_atts = array(
 			'value' => $value,

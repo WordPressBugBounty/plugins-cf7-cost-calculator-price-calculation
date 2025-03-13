@@ -69,18 +69,33 @@ function wpcf7_checkbox_custom_form_tag_handler( $tag ) {
 	foreach( $custom_data as $value_chua ){
 		$custom_data_ok = explode("|",$value_chua);
 		$values[] = $custom_data_ok[0];
-		$labels[] = $custom_data_ok[1];
+		if(isset($custom_data_ok[1])) {
+			$labels[] = $custom_data_ok[1];
+		}else{
+			$labels[] = $custom_data_ok[0];
+		}
 	}
 	// end custom 
+	$default = $tag->get_option( 'default', '', true );
 	$default_choice = $tag->get_default_option( null, array(
 		'multiple' => $multiple,
 	) );
 	$hangover = wpcf7_get_hangover( $tag->name, $multiple ? array() : '' );
+	$i=1;
 	foreach ( $values as $key => $value ) {
 		if ( $hangover ) {
 			$checked = in_array( $value, (array) $hangover, true );
 		} else {
-			$checked = in_array( $value, (array) $default_choice, true );
+			//$checked = in_array( $value, (array) $default_choice, true );
+			$checked = false;
+			if($default){
+				$defaults = explode("|",$default);
+				if(in_array($i,$defaults) ){
+					$checked =true;
+				}else{
+					$checked = false;
+				}
+			}
 		}
 		if ( isset( $labels[$key] ) ) {
 			$label = $labels[$key];
@@ -144,6 +159,7 @@ function wpcf7_checkbox_custom_form_tag_handler( $tag ) {
 		}
 		$item = '<span class="' . esc_attr( $class ) . '">' . $item . '</span>';
 		$html .= $item;
+		$i++;
 	}
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><span %2$s>%3$s</span>%4$s</span>',
