@@ -64,7 +64,6 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 	foreach( $custom_data as $value_chua ){
 		$custom_data_ok = explode("|",$value_chua);
 		$values[] = $custom_data_ok[0];
-		$labels[] = $custom_data_ok[1];
 		if(isset($custom_data_ok[1])) {
 			$labels[] = $custom_data_ok[1];
 		}else{
