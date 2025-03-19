@@ -5,7 +5,7 @@
 * Requires Plugins: contact-form-7
 * Description: Create forms with field values calculated based in other form field values for contact form 7
 * Author: add-ons.org
-* Version: 9.6.5
+* Version: 9.6.6
 * Domain Path: /languages
 * Text Domain: cf7-cost-calculator-price-calculation
 * Author URI: https://add-ons.org/

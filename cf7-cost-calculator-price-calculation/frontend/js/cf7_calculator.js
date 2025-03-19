@@ -2,6 +2,29 @@
     "use strict";
     $( document ).ready( function () { 
         const mexp = new Mexp;
+        //show value 
+        $( ".wpcf7-checkbox_custom input1, .wpcf7-radio_custom input1" ).each(function( index ) {
+           var row_value = $(this).val();
+           var n = row_value.search(/\|/i);
+           if(n<1){
+                var new_value = $(this).val();
+                if(new_value == ""){
+                    new_value =  $(this).attr("value");
+                }
+                var text_lb = $(this).closest("span").find(".wpcf7-list-item-label").text();
+                if( text_lb != "" ){
+                    $(this).val(new_value+ "|" +text_lb);
+                }
+            }
+        });
+        $( ".wpcf7-select_custom option1" ).each(function( index ) {
+           var row_value = $(this).val();
+           var row_lable = $(this).html();
+           var n = row_value.search(/\|/i);
+           if(n<1){
+                $(this).val(row_value +"|" + row_lable);
+            }
+        });
         $("body").on("click","input.number-format",function(){
             $(this).autoNumeric();
             var data = $(this).autoNumeric("get");
@@ -71,20 +94,24 @@
                                         new_value =  $(this).attr("value");
                                     }
                                     vl += new Number(new_value);
-                                    var text_lb = $(this).closest("span").find(".wpcf7-list-item-label").text();
-                                    if( text_lb != "" ){
-                                        if( value_key_vl ){
-                                            $(this).val(new_value+ "|" +text_lb);
-                                        }
-                                    }
                                 } 
                         });
                         $("input[name='"+match[0]+"']:checked").each(function () {
-                            var new_value = $(this).val();
-                            if(new_value == ""){
-                                new_value = $(this).attr("value");
-                            }    
-                            vl += new Number(new_value);      
+                            var row_value =  $(this).val();
+                            if(row_value == ""){
+                                row_value =  $(this).attr("value");
+                            }
+                            var n = row_value.search(/\|/i);
+                            if(n>0){
+                                var vls = row_value.split("|");
+                                vl += new Number( vls[0] );
+                            }else{
+                                var new_value = $(this).val();
+                                if(new_value == ""){
+                                    new_value =  $(this).attr("value");
+                                }
+                                vl += new Number(new_value);
+                            }      
                         });
                     }else if( type == "radio"){
                         var vl = $("input[name='"+match[0]+"']:checked").val();
@@ -93,6 +120,13 @@
                         }
                         if( vl === undefined ){
                             vl = 0;
+                        }
+                        if(vl != 0){
+                            var n = vl.search(/\|/i);
+                            if(n>0){
+                                var vls = vl.split("|");
+                                vl = new Number( vls[0] );
+                            }
                         }
                     }
                     else if( type == "text"){ 
@@ -114,12 +148,7 @@
                             if(n>0){
                                 var vls = vl.split("|");
                                 vl = vls[0];
-                            }else{
-                                var text_lb = $("select[name="+match[0]+"]").find(":selected").text();
-                                if( value_key_vl ){
-                                    $("select[name="+match[0]+"]").find(":selected").val(vl+ "|" + text_lb);
-                                }
-                            } 
+                            }
                         }else{
                             vl = type_textarea;
                         }
