@@ -18,6 +18,7 @@ if(!class_exists('Superaddons_Check_Purchase_Code')){
 			$this->data = $args;	
 			add_filter( 'plugin_action_links_' . $this->data["plugin"] , array( $this, 'add_action' ) );
 			add_action( 'wp_ajax_rednumber_check_purchase_code', array($this,'check_purchase_code_ajax') );
+			add_action( 'wp_ajax_rednumber_dismiss_noty', array($this,'dismiss_noty') );
 			add_action( 'wp_ajax_rednumber_check_purchase_code_remove', array($this,'check_purchase_remove_code_ajax') );
 			add_action('admin_enqueue_scripts', array($this,'add_js'));
 			add_action( 'admin_notices', array($this,"add_pro") );
@@ -55,19 +56,33 @@ if(!class_exists('Superaddons_Check_Purchase_Code')){
 		function add_pro(){
 	        global $pagenow;
 	        $admin_pages = array('index.php', 'plugins.php');
+	        $notice_id = $this->data["id"];
 	        $check = get_option( '_redmuber_item_'.$this->data["id"] );
 	        if($check != "ok" ) {
 		        if ( in_array( $pagenow, $admin_pages )) {
-		        ?>
-		         <div class="notice notice-warning is-dismissible">
-		            <p><strong><?php echo esc_attr($this->data["plugin_name"]) ?>: </strong><?php esc_html_e( 'Enter Purchase Code below the plugin  or Upgrade to pro version: ', 'rednumber' ); ?> <a href="<?php echo esc_url( $this->data["pro"] ) ?>" target="_blank" ><?php echo esc_url( $this->data["pro"] ) ?></a></p>
-		        </div>
-		        <?php
+		        	$check_disable = "";
+		        	if($pagenow == "index.php") {
+		        		    if (get_user_meta(get_current_user_id(), "yeeaddons_dismissed_{$notice_id}", true)) {
+		        		    	$check_disable = "yes";
+		        		    }
+		        	}
+		        	if($check_disable == ""){
+			        ?>
+			         <div class="notice notice-warning is-dismissible yeeaddons-s-dismissible" data-id="<?php echo esc_attr($this->data["id"] ) ?>">
+			            <p><strong><?php echo esc_attr($this->data["plugin_name"]) ?>: </strong><?php esc_html_e( 'Enter Purchase Code below the plugin  or Upgrade to pro version: ', 'rednumber' ); ?> <a href="<?php echo esc_url( $this->data["pro"] ) ?>" target="_blank" ><?php echo esc_url( $this->data["pro"] ) ?></a></p>
+			        </div>
+			        <?php
+		    		}
 		    	}
 	    	}
 	    }
+	    function dismiss_noty(){
+	    	$id = sanitize_text_field($_POST["id"]);
+	    	update_user_meta(get_current_user_id(), 'yeeaddons_dismissed_' . $id, true);
+    		wp_send_json_success();
+	    }
 		function add_js(){
-			wp_enqueue_script('rednumber_check_purchase_code', plugins_url('rednumber_check_purchase_code.js', __FILE__),array("jquery"));
+			wp_enqueue_script('rednumber_check_purchase_code', plugins_url('rednumber_check_purchase_code.js', __FILE__),array("jquery"),"7.0.0");
 		}
 		function add_action($links){
 			$check = get_option( '_redmuber_item_'.$this->data["id"] );

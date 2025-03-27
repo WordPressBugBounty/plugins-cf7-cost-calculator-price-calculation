@@ -42,5 +42,14 @@
 				$(".rednumber-purchase-container_show").addClass('hidden');
 			});
 		})
+		$("body").on("click",".notice.is-dismissible",function(e){
+            var data = {
+                'action': 'rednumber_dismiss_noty',
+                'id': $(this).data('id'),
+            };
+            jQuery.post(ajaxurl, data, function() {
+                console.log(response);
+            });
+        })
     })
 })(jQuery);
