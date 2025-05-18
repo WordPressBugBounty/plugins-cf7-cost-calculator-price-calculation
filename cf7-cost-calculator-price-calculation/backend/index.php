@@ -11,10 +11,12 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 	}
 	function wpcf7_calculated_validation_filter( $result, $tag ) {
 		$name = $tag->name;
-		$value = isset( $_POST[$name] )
-			? trim( strtr( (string) $_POST[$name], "\n", " " ) )
-			: '';
-		$value = sanitize_text_field($value);
+		if( isset( $_POST[$name] ) ) {
+			$value = wp_unslash(sanitize_text_field($_POST[$name]));
+		}else{
+			$value = "";	
+		}
+		
 		$min = $tag->get_option( 'min', 'signed_int', true );
 		$max = $tag->get_option( 'max', 'signed_int', true );
 		if ( $tag->is_required() && '' == $value ) {
@@ -46,24 +48,19 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 	}
 	function tag_generator_total_2($contact_form , $options = ''){
 		$args = wp_parse_args( $options, array() );
-		$check = get_option( '_redmuber_item_1515');
+		$check = "ok";
 		$type = $args['id'];
 		$datas = array();
 		$datas_done = array();
 		$text_pro = "";
 		$disable_pro = "";
 		$class_pro = "";
-		if($check != "ok"){
-			$text_pro = "-Pro version";
-			$disable_pro = " disabled";
-			$class_pro = "pro_disable";
-		}
 		$datas_done = $this->get_data_auto($contact_form);
         $field_types = array(
 			'calculated' => array(
-				'display_name' => __( 'Calculator', 'contact-form-7' ),
-				'heading' => __( 'Calculator form-tag generator', 'contact-form-7' ),
-				'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">Calculator</a>.', 'contact-form-7' ),
+				'display_name' => __( 'Calculator', 'cf7-cost-calculator-price-calculation' ),
+				'heading' => __( 'Calculator form-tag generator', 'cf7-cost-calculator-price-calculation' ),
+				'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">Calculator</a>.', 'cf7-cost-calculator-price-calculation' ),
 			),
 		);
 		$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
@@ -84,7 +81,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 					),
 					array( 'http', 'https' )
 				);
-				echo $description;
+				echo wp_kses_post($description);
 			?></p>
 		</header>
 		<div class="control-box">
@@ -100,35 +97,35 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 			?>
 			<fieldset>
 				<legend id="cf7_label"><?php
-					echo esc_html( __( 'Type input', 'contact-form-7' ) );
+					echo esc_html( __( 'Type input', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="cf7_label:" aria-labelledby="cf7_label" />
 				<?php esc_html_e("Hide input and show lable",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset>
 				<legend id="cf7_block"><?php
-					echo esc_html( __( 'Lable display Property', 'contact-form-7' ) );
+					echo esc_html( __( 'Lable display Property', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="cf7_block:" aria-labelledby="cf7_block" />
 				<?php esc_html_e("Displays an element as a block element (like <p>). It starts on a new line, and takes up the whole width",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset>
 				<legend id="cf7_hide"><?php
-					echo esc_html( __( 'Hide Field', 'contact-form-7' ) );
+					echo esc_html( __( 'Hide Field', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="cf7_hide:" aria-labelledby="cf7_hide" />
 				<?php esc_html_e("Hide input and show lable",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset>
 				<legend id="float_right"><?php
-					echo esc_html( __( 'Float Right', 'contact-form-7' ) );
+					echo esc_html( __( 'Float Right', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="float_right:" aria-labelledby="float_right" />
 				<?php esc_html_e("Float Right",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset>
 				<legend id="default_value"><?php
-					echo esc_html( __( 'Set Formula', 'contact-form-7' ) );
+					echo esc_html( __( 'Set Formula', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<div id="autocomplete-textarea-container">
 					<textarea data-tag-part="value" rows="10" id="autocomplete-textarea" class="large-text code" id="default_value"></textarea>
@@ -138,42 +135,42 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 			</fieldset>
 			<fieldset>
 				<legend id="cf7_label"><?php
-					echo esc_html( __( 'Number Format', 'contact-form-7' ) );
+					echo esc_html( __( 'Number Format', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="format:" aria-labelledby="format" class="calculatedformat_enable" />
 				<?php esc_html_e("Enable Number Format",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset class="calculatedformat hidden">
 				<legend id="symbols"><?php
-					echo esc_html( __( 'Symbols', 'contact-form-7' ) );
+					echo esc_html( __( 'Symbols', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="text" data-tag-part="option" data-tag-option="symbols:" aria-labelledby="format" class="calculatedformat_data" />
 				<?php  echo esc_html($text_pro);  ?>
 			</fieldset>
 			<fieldset class="calculatedformat hidden">
 				<legend id="symbols_position_right"><?php
-					echo esc_html( __( 'Symbols position Right', 'contact-form-7' ) );
+					echo esc_html( __( 'Symbols position Right', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="checkbox" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="symbols_position_right:" aria-labelledby="symbols_position_right" class="calculatedformat_data" />
 				<?php  echo esc_html($text_pro);  ?>
 			</fieldset>
 			<fieldset class="calculatedformat hidden">
 				<legend id="thousand_sep"><?php
-					echo esc_html( __( 'Thousand separator', 'contact-form-7' ) );
+					echo esc_html( __( 'Thousand separator', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="text" data-tag-part="option" data-tag-option="thousand_sep:" aria-labelledby="thousand_sep" class="calculatedformat_data" placeholder="comma" <?php echo esc_attr($disable_pro) ?>  />
 				<?php  echo esc_html($text_pro);  ?>
 			</fieldset>
 			<fieldset class="calculatedformat hidden">
 				<legend id="decimal_sep"><?php
-					echo esc_html( __( 'Decimal separator', 'contact-form-7' ) );
+					echo esc_html( __( 'Decimal separator', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="text" data-tag-part="option" data-tag-option="decimal_sep:" aria-labelledby="decimal_sep" class="calculatedformat_data" placeholder="." />
 				<?php  echo esc_html($text_pro);  ?>
 			</fieldset>
 			<fieldset class="calculatedformat hidden">
 				<legend id="num_decimals"><?php
-					echo esc_html( __( 'Number of decimals', 'contact-form-7' ) );
+					echo esc_html( __( 'Number of decimals', 'cf7-cost-calculator-price-calculation' ) );
 				?></legend>
 				<input type="number" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
 				<?php  echo esc_html($text_pro);  ?>
@@ -191,18 +188,13 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 	}
 	function tag_generator_total($contact_form , $args = ''){
 		$args = wp_parse_args( $args, array() );
-		$check = get_option( '_redmuber_item_1515');
+		$check = "ok";
 		$type = $args['id'];
 		$datas = array();
 		$datas_done = array();
 		$text_pro = "";
 		$disable_pro = "";
 		$class_pro = "";
-		if($check != "ok"){
-			$text_pro = "-Pro version";
-			$disable_pro = " disabled";
-			$class_pro = "pro_disable";
-		}
 		$datas_done = $this->get_data_auto($contact_form);
 		?>
 		<div class="control-box">
@@ -212,16 +204,6 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 			<fieldset>
 				<table class="form-table">
 					<tbody>
-						<?php if($check != "ok") {
-							?>
-							<tr>
-						<th scope="row"><?php echo esc_html( __( 'Pro version', 'cf7-cost-calculator-price-calculation' ) ); ?></th>
-						<td>
-							<a href="https://add-ons.org/plugin/contact-form-7-cost-calculator/" target="_blank">https://add-ons.org/plugin/contact-form-7-cost-calculator/</a>
-						</td>
-						</tr>
-							<?php
-						} ?>
 						<tr>
 						<th scope="row"><?php echo esc_html( __( 'Field type', 'cf7-cost-calculator-price-calculation' ) ); ?></th>
 						<td>
@@ -258,7 +240,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 									<textarea rows="10" id="autocomplete-textarea" class="large-text code" name="values" id="<?php echo esc_attr( $args['content'] . '-values' ); ?>"></textarea>
 								</div>
 								 <br>
-								<?php _e( 'Eg: (number-253 + number-254)/ 2 + radio_custom-708 + checkbox_custom-708', 'cf7-cost-calculator-price-calculation' ); ?> <br>
+								<?php esc_attr_e( 'Eg: (number-253 + number-254)/ 2 + radio_custom-708 + checkbox_custom-708', 'cf7-cost-calculator-price-calculation' ); ?> <br>
 									<strong>number-253, number-254, radio_custom-708, checkbox_custom-708</strong> is name field
 								</td>
 						</tr>
@@ -328,7 +310,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 				</fieldset>
 			</div>
 			<div class="insert-box">
-				<input type="text" style="max-width: 480px;" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+				<input type="text" style="max-width: 480px;" name="<?php echo esc_attr($type); ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
 				<div class="submitbox">
 					<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'cf7-cost-calculator-price-calculation' ) ); ?>" />
 				</div>
@@ -497,11 +479,8 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 			return $html;
 		}
 		function get_data_auto($contact_form){
-			$check = get_option( '_redmuber_item_1515');
+			$check = "ok";
 			$text_pro = "";
-			if($check != "ok"){
-				$text_pro = "-Pro version";
-			}
 			$datas = array();
 			$datas_done = array();
 			$datas[] = array("key"=>"if( condition, true, false)", "value"=>"if( condition, true, false)");

@@ -212,12 +212,13 @@
                         total = eq+" Pro version";
                     }
                 }
-                $(this).attr("data-number",total);
                 if( $(this).hasClass("number-format") ){
                     $(this).autoNumeric();
                     $(this).autoNumeric("set",total);
                     $(this).parent().find('.cf7-calculated-name').autoNumeric();
                     $(this).parent().find('.cf7-calculated-name').autoNumeric("set",total);
+                    var custom_tl = $(this).val();
+                    $(this).attr("data-number",custom_tl);
                 }else{
                     $(this).attr("value",total);
                     $(this).val(total);
