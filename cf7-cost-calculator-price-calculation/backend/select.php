@@ -79,7 +79,7 @@ function wpcf7_select_form_tag_handler_custom( $tag ) {
 	or empty( $values ) ) {
 		array_unshift(
 			$labels,
-			__( '&#8212;Please choose an option&#8212;', 'cf7-cost-calculator-price-calculation' )
+			__( '&#8212;Please choose an option&#8212;', 'contact-form-7' )
 		);
 		array_unshift( $values, '' );
 	} elseif ( $first_as_label ) {
@@ -123,12 +123,9 @@ add_filter( 'wpcf7_validate_select_custom*', 'wpcf7_select_validation_filter_cus
 function wpcf7_select_validation_filter_custom( $result, $tag ) {
 	$name = $tag->name;
 	if ( isset( $_POST[$name] ) && is_array( $_POST[$name] ) ) {
-		$datas = map_deep( $_POST[$name], 'sanitize_text_field' );
-		$datas = map_deep( $datas, 'wp_unslash' );
-		foreach ( $datas as $key => $value ) {
+		foreach ( $_POST[$name] as $key => $value ) {
 			if ( '' === $value ) {
-				$key_v = wp_unslash(sanitize_text_field($_POST[$name][$key]));
-				unset( $key_v );
+				unset( $_POST[$name][$key] );
 			}
 		}
 	}
@@ -153,9 +150,9 @@ function wpcf7_add_tag_generator_menu_custom() {
 function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 	$field_types = array(
 		'select_custom' => array(
-			'display_name' => __( 'Drop-down menu', 'cf7-cost-calculator-price-calculation' ),
-			'heading' => __( 'Drop-down menu form-tag generator', 'cf7-cost-calculator-price-calculation' ),
-			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">drop-down menu</a>.', 'cf7-cost-calculator-price-calculation' ),
+			'display_name' => __( 'Drop-down menu', 'contact-form-7' ),
+			'heading' => __( 'Drop-down menu form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">drop-down menu</a>.', 'contact-form-7' ),
 		),
 	);
 	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
@@ -173,7 +170,7 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 				),
 				array( 'http', 'https' )
 			);
-			echo wp_kses_post($description);
+			echo $description;
 		?></p>
 	</header>
 	<div class="control-box">
@@ -189,20 +186,20 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 		?>
 		<fieldset>
 			<legend id="selectable-values-legend"><?php
-				echo esc_html( __( 'Selectable values', 'cf7-cost-calculator-price-calculation' ) );
+				echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
 			?></legend>
 			<?php
-				echo wp_kses_post(sprintf(
+				echo sprintf(
 					'<span %1$s>%2$s</span>',
 					wpcf7_format_atts( array(
 						'id' => 'selectable-values-description',
 					) ),
-					esc_html( __( "One item per line.", 'cf7-cost-calculator-price-calculation' ) )
-				));
+					esc_html( __( "One item per line.", 'contact-form-7' ) )
+				);
 			?>
 			<br />
 			<?php
-				echo wp_kses_post(sprintf(
+				echo sprintf(
 					'<textarea %1$s>%2$s</textarea>',
 					wpcf7_format_atts( array(
 						'required' => true,
@@ -210,13 +207,13 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 						'aria-labelledby' => 'selectable-values-legend',
 						'aria-describedby' => 'selectable-values-description',
 					) ),
-					esc_html( __( "10|Option 1\n20|Option 2\n30|Option 3", 'cf7-cost-calculator-price-calculation' ) )
-				));
+					esc_html( __( "10|Option 1\n20|Option 2\n30|Option 3", 'contact-form-7' ) )
+				);
 			?>
 			<?php if ( true ) { ?>
 			<br />
 			<?php
-				echo wp_kses_post(sprintf(
+				echo sprintf(
 					'<label><input %1$s /> %2$s</label>',
 					wpcf7_format_atts( array(
 						'type' => 'checkbox',
@@ -224,8 +221,8 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 						'data-tag-part' => 'option',
 						'data-tag-option' => 'use_label_element',
 					) ),
-					esc_html( __( "Wrap each item with a label element.", 'cf7-cost-calculator-price-calculation' ) )
-				));
+					esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
+				);
 			?>
 			<?php } ?>
 		</fieldset>
@@ -240,12 +237,12 @@ function wpcf7_tag_generator_menu_custom_2( $contact_form, $options = '' ){
 }
 function wpcf7_tag_generator_menu_custom( $contact_form, $args = '' ) {
 	$args = wp_parse_args( $args, array() );
-	$description = __( "Generate a form-tag for a drop-down menu. For more details.", 'cf7-cost-calculator-price-calculation' );
+	$description = __( "Generate a form-tag for a drop-down menu. For more details, see %s.", 'cf7-cost-calculator-price-calculation' );
 	$desc_link = wpcf7_link( __( 'https://contactform7.com/checkboxes-radio-buttons-and-menus/', 'cf7-cost-calculator-price-calculation' ), __( 'Checkboxes, Radio Buttons and Menus', 'cf7-cost-calculator-price-calculation' ) );
 ?>
 <div class="control-box">
 <fieldset>
-<legend><?php echo wp_kses_post($description); ?></legend>
+<legend><?php echo sprintf( esc_html( $description ), $desc_link ); ?></legend>
 <table class="form-table">
 <tbody>
 	<tr>
@@ -267,7 +264,7 @@ function wpcf7_tag_generator_menu_custom( $contact_form, $args = '' ) {
 		<fieldset>
 		<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'cf7-cost-calculator-price-calculation' ) ); ?></legend>
 		<textarea name="values" class="values" id="<?php echo esc_attr( $args['content'] . '-values' ); ?>"></textarea>
-		<?php esc_html_e( "One option per line (number|text): Ex: <strong>10|Blue $10</strong>", 'cf7-cost-calculator-price-calculation'  ); ?></span></label><br />
+		<?php echo  __( "One option per line (number|text): Ex: <strong>10|Blue $10</strong>", 'cf7-cost-calculator-price-calculation'  ); ?></span></label><br />
 		<label><input type="checkbox" name="include_blank" class="option" /> <?php echo esc_html( __( 'Insert a blank item as the first option', 'cf7-cost-calculator-price-calculation' ) ); ?></label>
 		</fieldset>
 	</td>
@@ -290,7 +287,7 @@ function wpcf7_tag_generator_menu_custom( $contact_form, $args = '' ) {
 	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'cf7-cost-calculator-price-calculation' ) ); ?>" />
 	</div>
 	<br class="clear" />
-	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html("To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab.", 'cf7-cost-calculator-price-calculation' ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
+	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab.", 'cf7-cost-calculator-price-calculation' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
 </div>
 <?php
 }

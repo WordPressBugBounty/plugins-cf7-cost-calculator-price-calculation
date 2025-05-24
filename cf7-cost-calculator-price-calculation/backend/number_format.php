@@ -1,19 +1,106 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-class cf7_number_format_backend{
+global $yeeaddons_cf7_settings_calcutor_number;
+class Yeeaddons_CF7_Cost_Calculator_Number{
 	function __construct(  ){
 		add_action( 'wpcf7_admin_init' , array($this,'add_tag_generator_total') , 100 );
 		add_action( 'wpcf7_init', array($this,'add_shortcode_total') , 20 );
 		add_filter( 'wpcf7_validate_number_format', array($this,'wpcf7_calculated_validation_filter'), 10, 2 );
 		add_filter( 'wpcf7_validate_number_format*', array($this,'wpcf7_calculated_validation_filter'), 10, 2 );
+		add_action( "yeeaddons_cf7_cost_calculator_settings_number", array($this,"yeeaddons_cf7_cost_calculator_settings"),10 );
+		add_action( "yeeaddons_cf7_cost_calculator_settings_number_6", array($this,"yeeaddons_cf7_cost_calculator_settings_6"),10 );
+	}
+	function yeeaddons_cf7_cost_calculator_settings(){
+		?>
+		<tr class="calculatedformat">
+			<th scope="row">
+				<?php esc_html_e("Symbols",'cf7-cost-calculator-price-calculation') ?></th>
+			<td>
+				<label>
+					<input disabled type="text" name="symbols calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-symbols' ); ?>" />
+				</label>
+				<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+			</td>
+		</tr>
+		<tr class="calculatedformat ">
+			<th scope="row">
+				<?php esc_html_e("Symbols position Right",'cf7-cost-calculator-price-calculation') ?>
+			</th>
+			<td>
+				<label>
+					<input disabled type="checkbox" name="symbols_position_right" class="option" value="on" id="<?php echo esc_attr( $args['content'] . '-symbols_position_right' ); ?>" />
+					<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+				</label>
+			</td>
+		</tr>
+		<tr class="calculatedformat ">
+			<th scope="row">
+				<?php esc_html_e("Thousand separator",'cf7-cost-calculator-price-calculation') ?>
+			</th>
+			<td>
+				<input type="text" name="thousand_sep calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-thousand_sep' ); ?>" value="" placeholder="," />
+			</td>
+		</tr>
+		<tr class="calculatedformat ">
+			<th scope="row">
+				<?php esc_html_e("Decimal separator",'cf7-cost-calculator-price-calculation') ?>
+			</th>
+			<td>
+				<input type="text" name="decimal_sep calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-decimal_sep' ); ?>" value="" placeholder="." />
+			</td>
+		</tr>
+		<tr class="calculatedformat ">
+			<th scope="row">
+				<?php esc_html_e("Number of decimals",'cf7-cost-calculator-price-calculation') ?></th>
+			<td>
+				<input disabled type="number" name="num_decimals calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-num_decimals' ); ?>" value="" placeholder="2" />
+				<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+			</td>
+		</tr>
+		<?php
+	}
+	function yeeaddons_cf7_cost_calculator_settings_6(){
+		?>
+		<fieldset class="calculatedformat">
+			<legend id="symbols"><?php
+				esc_html_e( 'Symbols', 'contact-form-7' ) ;
+			?></legend>
+			<input type="text" data-tag-part="option" data-tag-option="symbols:" aria-labelledby="format" class="calculatedformat_data" />
+			<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+		</fieldset>
+		<fieldset class="calculatedformat">
+			<legend id="symbols_position_right"><?php
+				esc_html_e( 'Symbols position Right', 'contact-form-7' ) ;
+			?></legend>
+			<input type="checkbox" disabled data-tag-part="option" data-tag-option="symbols_position_right:" aria-labelledby="symbols_position_right" class="calculatedformat_data" />
+			<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+		</fieldset>
+		<fieldset class="calculatedformat">
+			<legend id="thousand_sep"><?php
+				esc_html_e( 'Thousand separator', 'contact-form-7' ) ;
+			?></legend>
+			<input type="text" data-tag-part="option" data-tag-option="thousand_sep:" aria-labelledby="thousand_sep" class="calculatedformat_data" placeholder="comma" />
+		</fieldset>
+		<fieldset class="calculatedformat">
+			<legend id="decimal_sep"><?php
+				esc_html_e( 'Decimal separator', 'contact-form-7' ) ;
+			?></legend>
+			<input type="text" data-tag-part="option" data-tag-option="decimal_sep:" aria-labelledby="decimal_sep" class="calculatedformat_data" placeholder="." />
+		</fieldset>
+		<fieldset class="calculatedformat">
+			<legend id="num_decimals"><?php
+				esc_html_e( 'Number of decimals', 'contact-form-7' ) ;
+			?></legend>
+			<input disabled type="number" data-tag-part="option" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
+			<?php esc_html_e( "Upgrade to pro version", 'contact-form-7' ) ?>
+		</fieldset>
+		<?php
 	}
 	function wpcf7_calculated_validation_filter( $result, $tag ) {
 		$name = $tag->name;
-		if( isset( $_POST[$name] ) ) {
-			$value = wp_unslash(sanitize_text_field($_POST[$name]));
-		}else{
-			$value = "";	
-		}
+		$value = isset( $_POST[$name] )
+			? trim( strtr( (string) $_POST[$name], "\n", " " ) )
+			: '';
 		$min = $tag->get_option( 'min', 'signed_int', true );
 		$max = $tag->get_option( 'max', 'signed_int', true );
 		if ( $tag->is_required() && '' == $value ) {
@@ -38,18 +125,12 @@ class cf7_number_format_backend{
 	}
 	function tag_generator_total_2($contact_form , $options = ''){
 		$args = wp_parse_args( $options, array() );
-		$check = "ok";
 		$type = $args['id'];
-		$datas = array();
-		$datas_done = array();
-		$text_pro = "";
-		$disable_pro = "";
-		$class_pro = "";
         $field_types = array(
 			'number_format' => array(
-				'display_name' => __( 'Number Format', 'cf7-cost-calculator-price-calculation' ),
-				'heading' => __( 'Calculator form-tag generator', 'cf7-cost-calculator-price-calculation' ),
-				'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">Calculator</a>.', 'cf7-cost-calculator-price-calculation' ),
+				'display_name' => __( 'Number Format', 'contact-form-7' ),
+				'heading' => __( 'Calculator form-tag generator', 'contact-form-7' ),
+				'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/checkboxes-radio-buttons-and-menus/">Calculator</a>.', 'contact-form-7' ),
 			),
 		);
 		$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
@@ -67,7 +148,7 @@ class cf7_number_format_backend{
 					),
 					array( 'http', 'https' )
 				);
-				echo wp_kses_post($description);
+				echo $description;
 			?></p>
 		</header>
 		<div class="control-box">
@@ -87,54 +168,20 @@ class cf7_number_format_backend{
 			?>
 			<fieldset>
 				<legend id="float_right"><?php
-					echo esc_html( __( 'Float Right', 'cf7-cost-calculator-price-calculation' ) );
+					echo esc_html( __( 'Float Right', 'contact-form-7' ) );
 				?></legend>
 				<input type="checkbox" value="on" data-tag-part="option" data-tag-option="float_right:" aria-labelledby="float_right" />
 				<?php esc_html_e("Float Right",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
 			<fieldset>
 				<legend id="cf7_label"><?php
-					echo esc_html( __( 'Number Format', 'cf7-cost-calculator-price-calculation' ) );
+					echo esc_html( __( 'Number Format', 'contact-form-7' ) );
 				?></legend>
 				<input checked type="checkbox" value="on" data-tag-part="option" data-tag-option="format:" aria-labelledby="format" class="calculatedformat_enable" />
 				<?php esc_html_e("Enable Number Format",'cf7-cost-calculator-price-calculation') ?>
 			</fieldset>
-			<fieldset class="calculatedformat">
-				<legend id="symbols"><?php
-					echo esc_html( __( 'Symbols', 'cf7-cost-calculator-price-calculation' ) );
-				?></legend>
-				<input type="text" data-tag-part="option" data-tag-option="symbols:" aria-labelledby="format" class="calculatedformat_data" />
-				<?php  echo esc_html($text_pro);  ?>
-			</fieldset>
-			<fieldset class="calculatedformat">
-				<legend id="symbols_position_right"><?php
-					echo esc_html( __( 'Symbols position Right', 'cf7-cost-calculator-price-calculation' ) );
-				?></legend>
-				<input type="checkbox" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="symbols_position_right:" aria-labelledby="symbols_position_right" class="calculatedformat_data" />
-				<?php  echo esc_html($text_pro);  ?>
-			</fieldset>
-			<fieldset class="calculatedformat">
-				<legend id="thousand_sep"><?php
-					echo esc_html( __( 'Thousand separator', 'cf7-cost-calculator-price-calculation' ) );
-				?></legend>
-				<input type="text" data-tag-part="option" data-tag-option="thousand_sep:" aria-labelledby="thousand_sep" class="calculatedformat_data" placeholder="comma" <?php echo esc_attr($disable_pro) ?>  />
-				<?php  echo esc_html($text_pro);  ?>
-			</fieldset>
-			<fieldset class="calculatedformat">
-				<legend id="decimal_sep"><?php
-					echo esc_html( __( 'Decimal separator', 'cf7-cost-calculator-price-calculation' ) );
-				?></legend>
-				<input type="text" data-tag-part="option" data-tag-option="decimal_sep:" aria-labelledby="decimal_sep" class="calculatedformat_data" placeholder="." />
-				<?php  echo esc_html($text_pro);  ?>
-			</fieldset>
-			<fieldset class="calculatedformat">
-				<legend id="num_decimals"><?php
-					echo esc_html( __( 'Number of decimals', 'cf7-cost-calculator-price-calculation' ) );
-				?></legend>
-				<input type="number" <?php echo esc_attr($disable_pro) ?> data-tag-part="option" data-tag-option="num_decimals:" aria-labelledby="num_decimals" class="calculatedformat_data" placeholder="2" />
-				<?php  echo esc_html($text_pro);  ?>
-			</fieldset>
 			<?php
+			do_action( "yeeaddons_cf7_cost_calculator_settings_number_6" );
 			?>
 		</div>
 		<footer class="insert-box">
@@ -147,15 +194,18 @@ class cf7_number_format_backend{
 	}
 	function tag_generator_total($contact_form , $args = ''){
 		$args = wp_parse_args( $args, array() );
-		$check = "ok";
 		$type = $args['id'];
-		$text_pro = "";
-		$disable_pro = "";
 		?>
 		<div class="control-box">
 			<fieldset>
 				<table class="form-table">
 					<tbody>
+						<tr>
+						<th scope="row"><?php echo esc_html( __( 'Document', 'cf7-cost-calculator-price-calculation' ) ); ?></th>
+						<td>
+							<a href="https://add-ons.org/plugin/contact-form-7-cost-calculator/" target="_blank">https://add-ons.org/plugin/contact-form-7-cost-calculator/</a>
+						</td>
+						</tr>
 						<tr>
 						<th scope="row"><?php echo esc_html( __( 'Field type', 'cf7-cost-calculator-price-calculation' ) ); ?></th>
 						<td>
@@ -202,52 +252,15 @@ class cf7_number_format_backend{
 								<label><input checked="checked"  type="checkbox" name="format" class="option calculatedformat_enable" value="on"> <?php esc_html_e("Enable Number Format",'cf7-cost-calculator-price-calculation') ?></label>
 								</td>
 						    </tr>
-						    <tr class="calculatedformat">
-						    <th scope="row">
-								<?php esc_html_e("Symbols",'cf7-cost-calculator-price-calculation') ?></th>
-								<td>
-								<label>
-									<input <?php echo esc_attr($disable_pro) ?> type="text" name="symbols calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-symbols' ); ?>" /></label>
-									<?php  echo esc_html($text_pro);  ?>
-								</td>
-						    </tr>
-						     <tr class="calculatedformat ">
-						    <th scope="row">
-								<?php esc_html_e("Symbols position Right",'cf7-cost-calculator-price-calculation') ?>
-								</th>
-								<td>
-									<label>
-									<input <?php echo esc_attr($disable_pro) ?> type="checkbox" name="symbols_position_right" class="option" value="on" id="<?php echo esc_attr( $args['content'] . '-symbols_position_right' ); ?>" /> <?php  echo esc_html($text_pro);  ?>
-								</label>
-								</td>
-						    </tr>
-						     <tr class="calculatedformat ">
-						    <th scope="row">
-								<?php esc_html_e("Thousand separator",'cf7-cost-calculator-price-calculation') ?></th>
-								<td>
-									<input <?php echo esc_attr($disable_pro) ?> type="text" name="thousand_sep calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-thousand_sep' ); ?>" value="" placeholder="," /> <?php  echo esc_html($text_pro);  ?>
-								</td>
-						    </tr>
-						     <tr class="calculatedformat ">
-						    <th scope="row">
-								<?php esc_html_e("Decimal separator",'cf7-cost-calculator-price-calculation') ?></th>
-								<td>
-									<input <?php echo esc_attr($disable_pro) ?> type="text" name="decimal_sep calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-decimal_sep' ); ?>" value="" placeholder="." /> <?php  echo esc_html($text_pro);  ?>
-								</td>
-						    </tr>
-						     <tr class="calculatedformat ">
-						    <th scope="row">
-								<?php esc_html_e("Number of decimals",'cf7-cost-calculator-price-calculation') ?></th>
-								<td>
-									<input <?php echo esc_attr($disable_pro) ?> type="number" name="num_decimals calculatedformat_data" class="option" id="<?php echo esc_attr( $args['content'] . '-num_decimals' ); ?>" value="" placeholder="2" /> <?php  echo esc_html($text_pro);  ?>
-								</td>
-						    </tr>
+							<?php
+							do_action( "yeeaddons_cf7_cost_calculator_settings_number" );
+							?>
 						</tbody>
 					</table>
 				</fieldset>
 			</div>
 			<div class="insert-box">
-				<input style="max-width: 480px;" type="text" name="<?php echo esc_attr($type); ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+				<input style="max-width: 480px;" type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
 				<div class="submitbox">
 					<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'cf7-cost-calculator-price-calculation' ) ); ?>" />
 				</div>
@@ -371,4 +384,4 @@ class cf7_number_format_backend{
 			return $html;
 		}
 	}
-new cf7_number_format_backend;
+$yeeaddons_cf7_settings_calcutor_number = new Yeeaddons_CF7_Cost_Calculator_Number;

@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.8
-Stable tag: 10.0.0
+Stable tag: 10.1
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
