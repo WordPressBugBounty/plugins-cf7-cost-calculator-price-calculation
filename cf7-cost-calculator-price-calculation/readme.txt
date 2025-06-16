@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.8
-Stable tag: 10.1
+Stable tag: 10.1.1
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -87,6 +87,14 @@ Calculated Fields Form can be used for creating both single and complex calculat
 * 1-year support
 
 **Download Pro Version**: <https://add-ons.org/plugin/contact-form-7-cost-calculator/>
+
+== Frequently Asked Questions ==
+= Why is our plugin mistakenly detected as a virus or malware by some security tools?=
+Some antivirus programs or website security plugins may mistakenly flag our plugin as a potential threat because it contains certain functions or code patterns — such as eval() or dynamic code execution — that are sometimes associated with malicious scripts.
+
+However, in our case, these features are used for legitimate technical purposes, such as performing advanced calculations or supporting dynamic features within the plugin.
+We want to emphasize that our plugin is completely clean, safe, and has been thoroughly tested.
+These warnings are false positives, caused by general scanning rules that sometimes misinterpret advanced code structures as suspicious.
 
 == Installation ==
 **Normal installation**
