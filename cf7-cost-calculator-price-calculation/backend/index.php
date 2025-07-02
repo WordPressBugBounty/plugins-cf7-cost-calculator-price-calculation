@@ -355,7 +355,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 		}
 		function custom_options($scanned_tag, $replace){
 			$attr = "";
-			if( $scanned_tag["type"] == "calculated" && $scanned_tag["attr"] !="" ) {
+			if( isset( $scanned_tag["type"]) && $scanned_tag["type"] == "calculated" && isset($scanned_tag["attr"]) && $scanned_tag["attr"] !="" ) {
 				$text = $scanned_tag["attr"];
 				$attr = $this->parse_atts( $text );
 				if ( is_array( $attr ) ) {

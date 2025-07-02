@@ -153,11 +153,11 @@ function wpcf7_checkbox_custom_form_tag_handler( $tag ) {
 					$free_text_atts['value'] = wp_unslash( $_POST[$free_text_name] );
 				}
 				$free_text_atts = wpcf7_format_atts( $free_text_atts );
-				$item .= sprintf( ' <input type="text" %s />', $free_text_atts );
+				$item .= sprintf( ' <input type="text" %s id="%s" />', $free_text_atts,'yeeaddons-'.esc_attr( $tag->name ).'-'.esc_attr($i ) );
 				$class .= ' has-free-text';
 			}
 		}
-		$item = '<span class="' . esc_attr( $class ) . '">' . $item . '</span>';
+		$item = '<span for="yeeaddons-'.esc_attr( $tag->name ).'-'.esc_attr($i ).'" class="' . esc_attr( $class ) . '">' . $item . '</span>';
 		$html .= $item;
 		$i++;
 	}

@@ -3,7 +3,7 @@
     $( document ).ready( function () { 
         const mexp = new Mexp;
         //show value 
-        $( ".wpcf7-checkbox_custom input1, .wpcf7-radio_custom input1" ).each(function( index ) {
+        $( ".wpcf7-checkbox_custom input, .wpcf7-radio_custom input" ).each(function( index ) {
            var row_value = $(this).val();
            var n = row_value.search(/\|/i);
            if(n<1){

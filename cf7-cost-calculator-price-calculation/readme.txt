@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.8
-Stable tag: 10.1.1
+Stable tag: 10.1.2
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,8 @@ With Contact Form 7 Cost Calculator - Price Calculator Form you can create forms
 Calculated Fields Form can be used for creating both single and complex calculations, for example general calculators, ideal weight calculators, calorie calculators, calculate quotes for hotel booking and rent a car services, calculate quotes for appointments and services, loan & finance calculators, date calculators like pregnancy calculators,...
 
 **DEMO**: <https://calculator.add-ons.org/>
+**Document**: <https://add-ons.org/plugin/contact-form-7-cost-calculator/>
+**Pro Version**: <https://add-ons.org/plugin/contact-form-7-cost-calculator/>
 
 **DEMO**: Delivery Service <https://calculator.add-ons.org/demo/delivery-service/>
 **DEMO**: Hotel room reservation <https://calculator.add-ons.org/demo/hotel-room-reservation/>
@@ -86,7 +88,9 @@ Calculated Fields Form can be used for creating both single and complex calculat
 * 30-day money-back guarantee
 * 1-year support
 
-**Download Pro Version**: <https://add-ons.org/plugin/contact-form-7-cost-calculator/>
+
+== Contact Form 7 Cost Calculator Field ==
+contact form 7 cost calculator, cost calculator for cf7, contact form 7 price calculation, contact form 7 total cost, contact form 7 dynamic pricing, contact form 7 calculator plugin, contact form 7 estimate form, contact form 7 quote calculator, contact form 7 form total, contact form 7 live cost update, contact form 7 conditional cost, contact form 7 form builder with cost, contact form 7 auto total field, cf7 numeric field calculation, cf7 input field pricing, woocommerce contact form 7 calculator, contact form 7 cost estimation form, cf7 service cost calculator, cf7 appointment cost calculator, contact form 7 interactive quote form
 
 == Frequently Asked Questions ==
 = Why is our plugin mistakenly detected as a virus or malware by some security tools?=
@@ -112,6 +116,9 @@ These warnings are false positives, caused by general scanning rules that someti
 4. Addmin field
 
 == Changelog ==
+= 10.1.2 =
+Fixed: PHP 8.2
+
 = 9.6.5 =
 Fixed: Big update
 
