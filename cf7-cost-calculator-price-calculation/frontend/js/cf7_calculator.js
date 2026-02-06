@@ -192,6 +192,7 @@
                     eq = $.cf7_fomulas_hours(eq);
                     eq = $.cf7_fomulas_log(eq);
                     eq = $.cf7_fomulas_rand(eq);
+                    eq = $.cf7_fomulas_rounddown(eq);
                     eq = $.cf7_fomulas_rounded_multiple(eq);
                     eq = $.cf7_wordcount(eq);
                     eq = $.cf7_fomulas_round_custom(eq);
@@ -412,6 +413,32 @@
                 x = $.cf7_fomulas_age(x);
             }
             return x;
+        }
+        $.cf7_fomulas_rounddown = function (x) {
+            var re = /rounddown\(([^()]*)\)/gm;
+            x = x.replace(re, function (x) {
+                x = x.replace(/[rounddown()]/g, '');
+                var data = x.split(",");
+                if(data.length > 1){
+                    x = mexp.eval(data[0]);
+                    var num_digits = parseInt(data[1]);
+                    return yeekit_cf7_fomulas_rounddown(x, num_digits);
+                }else{
+                    x = mexp.eval(x);
+                    var num_digits = 0;
+                    return yeekit_cf7_fomulas_rounddown(x, num_digits);
+                }
+            });
+            if (x.match(re)) {
+                x = $.cf7_fomulas_rounddown(x);
+            }
+            return x;
+        }
+        function yeekit_cf7_fomulas_rounddown(number, num_digits = 0) {
+            const factor = Math.pow(10, num_digits);
+            return number >= 0
+                ? Math.floor(number * factor) / factor
+                : Math.ceil(number * factor) / factor;
         }
         $.cf7_fomulas_age_2 = function(x){ 
             var re = /age2\(([^()]*)\)/gm;

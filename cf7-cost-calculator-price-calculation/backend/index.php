@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 global $yeeaddons_cf7_settings_calcutor;
 class Superaddons_Contactform7_Cost_Calculator_Backend{
+	private static $datas = null;
 	function __construct(  ){
 		add_action( 'wpcf7_admin_init' , array($this,'add_tag_generator_total') , 100 );
 		add_action( 'wpcf7_init', array($this,'add_shortcode_total') , 20 );
@@ -149,12 +150,19 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 			array($this,'tag_generator_total') );
 		}
 	}
+	function add_footer(){
+		$datas_done = self::$datas;
+		?>
+		<script>
+	    var contact_form_7_calculator_name = <?php echo json_encode($datas_done); ?>
+	    </script>
+		<?php
+	}
 	function tag_generator_total_2($contact_form , $options = ''){
-		$args = wp_parse_args( $options, array() );
-		$type = $args['id'];
-		$datas = array();
 		$datas_done = array();
 		$datas_done = $this->get_data_auto($contact_form);
+		self::$datas = $datas_done;
+		add_action('admin_footer', array($this,'add_footer'));
         $field_types = array(
 			'calculated' => array(
 				'display_name' => __( 'Calculator', 'contact-form-7' ),
@@ -164,9 +172,7 @@ class Superaddons_Contactform7_Cost_Calculator_Backend{
 		);
 		$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 		?>
-		<script>
-	    var contact_form_7_calculator_name = <?php echo json_encode($datas_done); ?>
-	    </script>
+		
 		<header class="description-box">
 			<h3><?php
 				echo esc_html( $field_types['calculated']['heading'] );

@@ -2,8 +2,8 @@
 Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
-Tested up to: 6.8
-Stable tag: 10.1.2
+Tested up to: 6.9
+Stable tag: 10.1.3
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,7 +51,6 @@ Calculated Fields Form can be used for creating both single and complex calculat
 - **Division operator**: number / number
 - **Opening and Closing Parenthesis**: (number + number ) / number
 
-
 == Advanced Functions ==
 
 - **Conditional Statements**: if(test, true result, false result)
@@ -76,6 +75,7 @@ Calculated Fields Form can be used for creating both single and complex calculat
 - **RANDOM function**: random(number_start, number_end)
 - **POW function**: pow(number1, number2)
 - **SIN, COS function**: sin(0) cos(0)
+- **ROUNDDOWN**: rounddown(Number,Num_digits) rounddown(3.14159,3)
 - **SUM function**: sum(number1, number2, number3,...)
 - **WORDCOUNT function**: wordcount(field)
 - **Round up to the next multiple of number**: rounded_multiple(7,5)
@@ -116,6 +116,10 @@ These warnings are false positives, caused by general scanning rules that someti
 4. Addmin field
 
 == Changelog ==
+= 10.1.3 =
+Added: ROUNDDOWN function
+Fixed: Contact form 7 later version
+
 = 10.1.2 =
 Fixed: PHP 8.2
 
