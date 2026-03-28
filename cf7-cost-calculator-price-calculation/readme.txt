@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.9
-Stable tag: 10.1.3
+Stable tag: 10.2
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -116,6 +116,12 @@ These warnings are false positives, caused by general scanning rules that someti
 4. Addmin field
 
 == Changelog ==
+= 10.2 =
+Added: You can now use nested formulas.
+Example: [calculated name1 "if(max(20,10)>=15,round(avg(10,20))+floor(sqrt(16))+mod(10,3)+log10(100)+ceil(1.5),min(random(1,10),rounddown(10.5,0)))+round2(10.556)+floor2(10.556)+rounded_multiple(14,5)
+"]
+
+
 = 10.1.3 =
 Added: ROUNDDOWN function
 Fixed: Contact form 7 later version
