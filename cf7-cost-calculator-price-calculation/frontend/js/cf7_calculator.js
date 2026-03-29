@@ -181,6 +181,11 @@
                     eq = $.cf7_fomulas_age_2(eq);
                     eq = $.cf7_fomulas_hours(eq);
                     eq = $.cf7_wordcount(eq);
+                    eq = $.cf7_fomulas_variadic_transpile(eq, "max");
+                    eq = $.cf7_fomulas_variadic_transpile(eq, "min");
+                    eq = $.cf7_fomulas_variadic_transpile(eq, "sum");
+                    eq = $.cf7_fomulas_variadic_transpile(eq, "avg");
+                    eq = $.cf7_fomulas_switch(eq);
                     // Provide default 0 for rounddown missing argument
                     eq = eq.replace(/rounddown\(([^,]+)\)/g, 'rounddown($1,0)');
                     try {
@@ -190,7 +195,7 @@
                             { token: "floor", show: "floor", type: 0, value: Math.floor },
                             { token: "ceil", show: "ceil", type: 0, value: Math.ceil },
                             { token: "sqrt", show: "sqrt", type: 0, value: Math.sqrt },
-                            { token: "log10", show: "log10", type: 0, value: function (x) { return Math.log(x); } },
+                            { token: "log10", show: "log10", type: 0, value: function (x) { return Math.log10(x); } },
                             { token: "round2", show: "round2", type: 0, value: function (x) { return parseFloat(parseFloat(x).toFixed(2)); } },
                             { token: "floor2", show: "floor2", type: 0, value: function (x) { return Math.floor(x * 100) / 100; } },
                             {
@@ -419,34 +424,82 @@
             }
             return x;
         }
-        $.cf7_fomulas_max = function (x) {
-            var re = /max\(([^()]*)\)/gm;
-            x = x.replace(re, function (match, content) {
-                var datas = content.split(",");
-                datas = datas.map(element => {
-                    return element.trim();
-                });
-                return Math.max.apply(null, datas);
-            });
-            if (x.match(re)) {
-                x = $.cf7_fomulas_max(x);
+        $.cf7_fomulas_variadic_transpile = function (eq, funcName) {
+            var tokenStr = funcName + "(";
+            if (typeof eq !== "string" || eq.indexOf(tokenStr) === -1) return eq;
+
+            var result = "";
+            var i = 0;
+            while (i < eq.length) {
+                var idx = eq.indexOf(tokenStr, i);
+                if (idx === -1) {
+                    result += eq.substring(i);
+                    break;
+                }
+
+                if (idx > 0 && /[a-zA-Z0-9_]/.test(eq[idx - 1])) {
+                    result += eq.substring(i, idx + tokenStr.length);
+                    i = idx + tokenStr.length;
+                    continue;
+                }
+
+                result += eq.substring(i, idx);
+                var depth = 0;
+                var start = idx + tokenStr.length;
+                var j = start;
+                while (j < eq.length) {
+                    if (eq[j] === '(') depth++;
+                    else if (eq[j] === ')') {
+                        if (depth === 0) break;
+                        depth--;
+                    }
+                    j++;
+                }
+                if (j === eq.length) {
+                    result += eq.substring(idx);
+                    break;
+                }
+                var innerArgs = eq.substring(start, j);
+                var argsStrList = $.cf7_split_args(innerArgs);
+                var validArgs = [];
+                for (var argIdx = 0; argIdx < argsStrList.length; argIdx++) {
+                    var trimmed = argsStrList[argIdx].trim();
+                    if (trimmed !== "") {
+                        validArgs.push($.cf7_fomulas_variadic_transpile(trimmed, funcName));
+                    }
+                }
+
+                var transformed = "";
+                if (funcName === "max" || funcName === "min") {
+                    if (validArgs.length === 0) {
+                        transformed = "0";
+                    } else if (validArgs.length === 1) {
+                        transformed = validArgs[0];
+                    } else {
+                        transformed = validArgs[validArgs.length - 1];
+                        for (var k = validArgs.length - 2; k >= 0; k--) {
+                            transformed = funcName + "(" + validArgs[k] + "," + transformed + ")";
+                        }
+                    }
+                } else if (funcName === "sum") {
+                    if (validArgs.length === 0) {
+                        transformed = "0";
+                    } else {
+                        transformed = "((" + validArgs.join(")+(") + "))";
+                    }
+                } else if (funcName === "avg") {
+                    if (validArgs.length === 0) {
+                        transformed = "0";
+                    } else {
+                        transformed = "(((" + validArgs.join(")+(") + "))/" + validArgs.length + ")";
+                    }
+                }
+
+                result += transformed;
+                i = j + 1;
             }
-            return x;
-        }
-        $.cf7_fomulas_min = function (x) {
-            var re = /min\(([^()]*)\)/gm;
-            x = x.replace(re, function (match, content) {
-                var datas = content.split(",");
-                datas = datas.map(element => {
-                    return element.trim();
-                });
-                return Math.min.apply(null, datas);
-            });
-            if (x.match(re)) {
-                x = $.cf7_fomulas_min(x);
-            }
-            return x;
-        }
+            return result;
+        };
         $.cf7_wordcount = function (x) {
             var re = /wordcount\(([^()]*)\)/gm;
             x = x.replace(re, function (match, content) {
@@ -457,6 +510,57 @@
             }
             return x;
         }
+        $.cf7_fomulas_switch = function (eq) {
+            if (typeof eq !== "string" || eq.indexOf("switch(") === -1) return eq;
+
+            var result = "";
+            var i = 0;
+            while (i < eq.length) {
+                var idx = eq.indexOf("switch(", i);
+                if (idx === -1) {
+                    result += eq.substring(i);
+                    break;
+                }
+                result += eq.substring(i, idx);
+                var depth = 0;
+                var start = idx + 7;
+                var j = start;
+                while (j < eq.length) {
+                    if (eq[j] === '(') depth++;
+                    else if (eq[j] === ')') {
+                        if (depth === 0) break;
+                        depth--;
+                    }
+                    j++;
+                }
+                if (j === eq.length) {
+                    result += eq.substring(idx);
+                    break;
+                }
+                var innerArgs = eq.substring(start, j);
+                var args = $.cf7_split_args(innerArgs);
+
+                var target = args[0] ? args[0].trim() : "0";
+                var defaultVal = "0";
+
+                if (args.length % 2 === 0) {
+                    defaultVal = args[args.length - 1].trim();
+                }
+
+                var transformed = defaultVal;
+                var limit = args.length % 2 === 0 ? args.length - 2 : args.length - 1;
+
+                for (var k = limit - 1; k >= 1; k -= 2) {
+                    var c = args[k].trim();
+                    var v = args[k + 1].trim();
+                    transformed = "if(" + target + "==" + c + "," + v + "," + transformed + ")";
+                }
+
+                result += $.cf7_fomulas_switch(transformed);
+                i = j + 1;
+            }
+            return result;
+        };
         $.cf7_fomulas_hours = function (x) {
             var re = /hours\(([^()]*)\)/gm;
             x = x.replace(re, function (match, content) {

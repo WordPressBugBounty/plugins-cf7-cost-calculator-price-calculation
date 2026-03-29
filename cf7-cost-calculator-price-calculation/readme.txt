@@ -3,7 +3,7 @@ Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
 Tested up to: 6.9
-Stable tag: 10.2
+Stable tag: 10.3
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -56,6 +56,7 @@ Calculated Fields Form can be used for creating both single and complex calculat
 - **Conditional Statements**: if(test, true result, false result)
 - **Nesting IFs to handle more conditions**: if(test, true result, if(test, true result, false result) )
 - **DAYS function**: days(end_date, start_date)
+- **SWITCH function**: switch( target, case1, value1, case2, value2, ..., default )
 - **MONTHS function**: months(end_date, start_date)
 - **YEARS function**: years(end_date, start_date)
 - **AGE function**: age(birth_date)
@@ -71,7 +72,6 @@ Calculated Fields Form can be used for creating both single and complex calculat
 - **MAX function**: max(number1, number2, number3,...)
 - **ABS function**: abs(number)
 - **SQR function**: sqrt(number1)
-- **MAX function**: max(number1, number2, number3,...)
 - **RANDOM function**: random(number_start, number_end)
 - **POW function**: pow(number1, number2)
 - **SIN, COS function**: sin(0) cos(0)
@@ -116,6 +116,10 @@ These warnings are false positives, caused by general scanning rules that someti
 4. Addmin field
 
 == Changelog ==
+= 10.3 =
+Added: SWITCH function
+Example: [calculated name1 "switch(field1,1,10,2,20,3,30,40)"]
+
 = 10.2 =
 Added: You can now use nested formulas.
 Example: [calculated name1 "if(max(20,10)>=15,round(avg(10,20))+floor(sqrt(16))+mod(10,3)+log10(100)+ceil(1.5),min(random(1,10),rounddown(10.5,0)))+round2(10.556)+floor2(10.556)+rounded_multiple(14,5)

@@ -569,7 +569,9 @@ class Superaddons_Contactform7_Cost_Calculator_Backend
 		$datas[] = array("key" => "avg( 10,20,60,...) = 30", "value" => "avg( number, number )");
 		$datas[] = array("key" => "min( number 1, number 2, ...)", "value" => "min( number1, number2)");
 		$datas[] = array("key" => "max( number 1, number 2, ...)", "value" => "max( number1, number2)");
+		$datas[] = array("key" => "sum( number 1, number 2, ...)", "value" => "sum( number1, number2)");
 		$datas[] = array("key" => "rounded_multiple( number 1, number 2)", "value" => "rounded_multiple( 7, 5)");
+		$datas[] = array("key" => "switch( target, case1, value1, ..., default )", "value" => "switch( field_name, 1, 10, 0)");
 		$tags = $contact_form->scan_form_tags();
 		foreach ($datas as $data) {
 			$datas_done[] = array("key" => $data["key"] . " - Pro version", "value" => $data["value"]);
