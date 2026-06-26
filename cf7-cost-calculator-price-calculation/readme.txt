@@ -2,8 +2,8 @@
 Contributors: addonsorg
 Tags: cf7, contact form 7,Cost Calculator, Calculator form, Calculator
 Requires at least: 2.5
-Tested up to: 6.9
-Stable tag: 10.3
+Tested up to: 7.0
+Stable tag: 10.4
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -116,7 +116,7 @@ These warnings are false positives, caused by general scanning rules that someti
 4. Addmin field
 
 == Changelog ==
-= 10.3 =
+= 10.4 =
 Added: SWITCH function
 Example: [calculated name1 "switch(field1,1,10,2,20,3,30,40)"]
 

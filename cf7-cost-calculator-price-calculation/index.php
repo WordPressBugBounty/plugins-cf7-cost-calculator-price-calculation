@@ -6,7 +6,7 @@
  * Requires Plugins: contact-form-7
  * Description: Create forms with field values calculated based in other form field values for contact form 7
  * Author: add-ons.org
- * Version: 10.3
+ * Version: 10.4
  * Author URI: https://add-ons.org/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html

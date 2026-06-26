@@ -62,15 +62,18 @@
                 reg.push($(this).attr("name"));
             })
             reg = $.remove_duplicates_ctf7(reg);
-            var field_regexp = new RegExp('(' + reg.join("|") + ')');
+            var field_regexp = new RegExp('(' + reg.join("|") + ')(?!\\()');
             $(".ctf7-total").each(function (index) {
                 var eq = $(this).data('formulas');
                 var value_key_vl = false;
                 if (eq == "") {
                     return;
                 }
-                eq = eq.toString();
                 eq = eq.replace(/ /g, '');
+                // Convert function names in formulas to lowercase to make them case-insensitive
+                eq = eq.replace(/(days?|months?|years?|age2?|hours|wordcount|max|min|sum|avg|switch|rounddown)\(/gi, function(match) {
+                    return match.toLowerCase();
+                });
                 while (match = field_regexp.exec(eq)) {
                     var type = $("input[name=" + match[0] + "]").attr("type");
                     if (type === undefined) {
@@ -335,17 +338,17 @@
             return x;
         }
         $.cf7_fomulas_days = function (x) {
-            var re = /days\(([^()]*)\)/gm;
+            var re = /days?\(([^()]*)\)/gm;
             x = x.replace(re, function (match, content) {
                 var datas = content.split(",");
                 var day_end1, day_start1;
-                if (datas[1].trim() == "now") {
+                if (datas[1].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_end1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
                     day_end1 = datas[1].trim();
                 }
-                if (datas[0].trim() == "now") {
+                if (datas[0].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_start1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
@@ -365,18 +368,18 @@
             return x;
         }
         $.cf7_fomulas_months = function (x) {
-            var re = /months\(([^()]*)\)/gm;
+            var re = /months?\(([^()]*)\)/gm;
             x = x.replace(re, function (match, content) {
                 var datas = content.split(",");
                 var day_end1, day_start1;
-                if (datas[1].trim() == "now") {
+                if (datas[1].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_end1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
                     day_end1 = datas[1].trim();
                 }
                 var day_end = $.cf7_fomulas_parse_date(day_end1);
-                if (datas[0].trim() == "now") {
+                if (datas[0].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_start1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
@@ -395,18 +398,18 @@
             return x;
         }
         $.cf7_fomulas_years = function (x) {
-            var re = /years\(([^()]*)\)/gm;
+            var re = /years?\(([^()]*)\)/gm;
             x = x.replace(re, function (match, content) {
                 var datas = content.split(",");
                 var day_end1, day_start1;
-                if (datas[1].trim() == "now") {
+                if (datas[1].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_end1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
                     day_end1 = datas[1].trim();
                 }
                 var day_end = $.cf7_fomulas_parse_date(day_end1);
-                if (datas[0].trim() == "now") {
+                if (datas[0].trim().toLowerCase() == "now") {
                     var today = new Date();
                     day_start1 = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 } else {
